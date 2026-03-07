@@ -22,6 +22,12 @@
 - This inserts the starter admin, staff, and viewer users into `public.users`.
 - Do not run this seed file in production.
 
+## Dev category seed helper
+
+- Run `supabase/seed/20260307174000_dev_categories.sql` in the dev Supabase project.
+- This inserts the starter category master rows into `public.category_master`.
+- It is safe to rerun because each insert checks for an existing slug first.
+
 ## Suggested demo inventory
 
 - 20 to 30 products across categories

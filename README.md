@@ -23,6 +23,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - Phase 1 auth is complete with password verification, signed sessions, login and logout routes, middleware protection, and a mobile-first login page
 - Phase 2 schema now has an initial migration for users, categories, inventory, sales, inventory transactions, chat logs, and backups
 - Auth now checks the Supabase `users` table first and falls back to local demo users in development when `AUTH_ALLOW_DEV_DEMO_USERS` stays enabled
+- Dev seed helpers now exist for starter users and category master data
 
 ## Start here
 
@@ -114,11 +115,12 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 2. Run [supabase/migrations/20260307163500_phase2_initial_schema.sql](supabase/migrations/20260307163500_phase2_initial_schema.sql).
 3. Open the table editor and confirm these tables exist: `users`, `category_master`, `inventory_products`, `sales_entries`, `inventory_transactions`, `chat_logs`, and `backups_log`.
 4. Open the database indexes view and confirm indexes exist for email, SKU, category, `sold_at`, and `created_at` lookups.
+5. Run [supabase/seed/20260307172000_dev_users.sql](supabase/seed/20260307172000_dev_users.sql) and confirm the starter users appear in `public.users`.
+6. Run [supabase/seed/20260307174000_dev_categories.sql](supabase/seed/20260307174000_dev_categories.sql) and confirm the starter categories appear in `public.category_master`.
 
 ## Human verification for Phase 2 auth source
 
-1. In the dev Supabase project, run [supabase/seed/20260307172000_dev_users.sql](supabase/seed/20260307172000_dev_users.sql).
-2. In `.env.local`, set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SESSION_SECRET`.
-3. Start the app locally and sign in with `admin@local.shop` / `AdminPass123!`.
-4. Confirm the dashboard loads and `/admin` still works for the admin user.
-5. Set `AUTH_ALLOW_DEV_DEMO_USERS=false`, restart the app, and confirm the same login still works so you know the database path is active.
+1. In `.env.local`, set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SESSION_SECRET`.
+2. Start the app locally and sign in with `admin@local.shop` / `AdminPass123!`.
+3. Confirm the dashboard loads and `/admin` still works for the admin user.
+4. Set `AUTH_ALLOW_DEV_DEMO_USERS=false`, restart the app, and confirm the same login still works so you know the database path is active.

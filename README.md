@@ -1,10 +1,10 @@
-# Shop Inventory App
+﻿# Shop Inventory App
 
 A mobile-first inventory and sales web app for a small internal shop team.
 
 ## Summary
 
-This repository now includes the Phase 0 implementation scaffold on top of the blueprint docs.
+This repository now includes the Phase 1 auth implementation on top of the blueprint docs.
 
 The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. The v1 scope stays focused on auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over approved queries.
 
@@ -17,13 +17,19 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - OpenAI API for the read-only chat flow
 - Separate dev and prod environments from day 1
 
+## Current phase status
+
+- Phase 0 scaffold is complete
+- Phase 1 auth is implemented with password verification, signed sessions, login and logout routes, middleware protection, and a mobile-first login page
+- Until the real `users` table is added in Phase 2, local development uses temporary demo users only when `NODE_ENV` is not `production`
+
 ## Start here
 
 1. Read [AGENTS.md](AGENTS.md)
 2. Review [DECISIONS.md](DECISIONS.md)
 3. Follow [TASKS.md](TASKS.md)
 4. Use the docs in [docs/](docs)
-5. Use the phase checklist in [Phase/phase0.md](Phase/phase0.md)
+5. Use the phase checklist in [Phase/phase1.md](Phase/phase1.md)
 
 ## Local development
 
@@ -75,6 +81,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - `NEXT_PUBLIC_APP_URL` is safe to expose to the browser.
 - `SUPABASE_ANON_KEY` is also browser-safe when used as the public anon key.
 - `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, and `SESSION_SECRET` must stay server-only.
+- `AUTH_ALLOW_DEV_DEMO_USERS` is optional and only affects local Phase 1 demo accounts.
 - `.gitignore` already excludes local env files, so these values will not be committed unless someone force-adds them manually.
 
 ## Repo map
@@ -86,13 +93,12 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - `agents/` holds role-focused briefs.
 - `Phase/` holds implementation checklists.
 
-## Human verification for Phase 0
+## Human verification for Phase 1
 
-1. Confirm the app starts locally with `npm run dev`
-2. Confirm the home page loads on mobile-width and desktop-width screens
-3. Confirm the docs list in the app and repo README is easy to find
-4. Confirm dev and prod environment separation is documented before Phase 1 work starts
-5. Confirm a PR to `master` shows `lint`, `typecheck`, and `build` checks in GitHub
-6. Confirm `master` branch protection blocks direct pushes and force pushes
-7. Confirm a manual `Rollback Tags` run creates one annotated `rollback-YYYY-MM-DD` tag
-8. Confirm `Rollback Tag Cleanup` keeps the newest 5 rollback tags and ignores non-rollback tags
+1. Start the app locally with `npm run dev`
+2. Open `http://localhost:3000` and confirm you are redirected to `/login`
+3. Sign in with the admin demo account shown on the login page and confirm the dashboard loads
+4. Try an invalid password and confirm the login page shows a clear error
+5. Sign in as the staff demo user and visit `/admin`, then confirm you are redirected back to `/` with an admin-only notice
+6. Sign in as the admin demo user and visit `/admin`, then confirm the page opens
+7. Use `Sign out` and confirm protected routes redirect back to `/login`

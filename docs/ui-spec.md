@@ -1,4 +1,4 @@
-# UI Spec
+﻿# UI Spec
 
 ## Design goals
 
@@ -6,7 +6,7 @@
 - Fast one-hand usage
 - Clear touch targets
 - Low visual noise
-- Fast access to stock and sales actions
+- Fast access to stock, sales, and chat actions
 
 ## Main screens
 
@@ -22,7 +22,8 @@
 - Summary cards
 - Low-stock list
 - Recent activity
-- Quick links to inventory, sales, chat, and backup export
+- Quick links to inventory, sales, and chat
+- Backup export stays outside the dashboard until Phase 7 ships
 
 ### Inventory list
 
@@ -47,8 +48,9 @@
 
 - Single input box
 - Suggested example questions
-- Answer area with optional result summary
+- Answer area with optional result summary table
 - Empty state explaining read-only limits
+- Development-friendly parsed intent panel for verification
 
 ## UI behavior notes
 
@@ -56,3 +58,5 @@
 - Prefer bottom-sheet style mobile interactions where helpful.
 - Keep table-heavy layouts collapsible on small screens.
 - Show role-limited actions only to allowed users.
+- Keep button contrast readable on both light and dark button treatments.
+

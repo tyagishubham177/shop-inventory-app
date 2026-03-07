@@ -39,6 +39,36 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - `npm run typecheck` runs TypeScript checks
 - `npm run build` verifies the production build
 
+## Repo safety
+
+- PRs into `master` run `lint`, `typecheck`, and `build` through GitHub Actions.
+- Daily rollback tags are created on `master` as `rollback-YYYY-MM-DD`.
+- Rollback tag cleanup keeps the newest 5 rollback tags even if they are old, then deletes older rollback tags once they are more than 7 days old.
+- Force-push blocking and PR-only merge rules for `master` must be enabled in GitHub branch protection or rulesets.
+
+## GitHub setup checklist
+
+1. Open the repository on GitHub and go to `Settings` -> `Rules` -> `Rulesets` or `Branches`.
+2. Create a rule for the `master` branch.
+3. Enable `Require a pull request before merging`.
+4. Enable `Require status checks to pass before merging`.
+5. Mark these checks as required after the workflow runs once:
+   - `lint`
+   - `typecheck`
+   - `build`
+6. Enable `Require branches to be up to date before merging`.
+7. Disable force pushes to `master`.
+8. Disable branch deletion for `master`.
+9. Apply the rule to admins too if you want the protection to cover all users.
+10. In `Settings` -> `Actions` -> `General`, confirm workflows can create and push tags with `Read and write permissions`.
+
+## Rollback operations
+
+- `Rollback Tags` runs daily at `18:30 UTC`, which is `00:00 IST` the next day.
+- `Rollback Tag Cleanup` runs after a successful daily rollback-tag run and can also be triggered manually.
+- You can manually run either workflow from the GitHub `Actions` tab with `Run workflow`.
+- The cleanup workflow only touches tags that start with `rollback-`.
+
 ## Environment notes
 
 - Keep real secrets only in `.env.local` for dev and in your deployment provider for prod.
@@ -62,3 +92,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 2. Confirm the home page loads on mobile-width and desktop-width screens
 3. Confirm the docs list in the app and repo README is easy to find
 4. Confirm dev and prod environment separation is documented before Phase 1 work starts
+5. Confirm a PR to `master` shows `lint`, `typecheck`, and `build` checks in GitHub
+6. Confirm `master` branch protection blocks direct pushes and force pushes
+7. Confirm a manual `Rollback Tags` run creates one annotated `rollback-YYYY-MM-DD` tag
+8. Confirm `Rollback Tag Cleanup` keeps the newest 5 rollback tags and ignores non-rollback tags

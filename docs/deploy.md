@@ -37,3 +37,7 @@
 - Generate one session secret per environment.
 - Add environment variables to the chosen deployment platform.
 - Confirm the app URL matches the deployed environment.
+- Enable GitHub Actions for the repo.
+- Set workflow permissions to `Read and write` so rollback-tag workflows can push tags.
+- Add branch protection or a ruleset for `master` that requires PRs, required checks, up-to-date branches, no force pushes, and no branch deletion.
+- After the PR workflow runs once, mark `lint`, `typecheck`, and `build` as required checks for `master`.

@@ -2,17 +2,19 @@
 
 ## Goal
 
-Implement archive, restore, and controlled delete behaviors.
+Implement sales entry and sales history workflows.
 
 ## Deliverables
 
-- Archive states for inventory records
-- Restore flow
-- Soft-delete handling where appropriate
-- Clear destructive-action confirmations
+- Sales validation
+- Sales query helpers
+- Sales routes
+- Manual and linked sales forms
+- Sales listing and filters
 
 ## Human verification
 
-- Archive and restore several products.
-- Confirm archived items do not appear in active lists unless filtered.
-- Confirm destructive actions require explicit confirmation.
+- Create linked sale entries.
+- Create manual sale entries.
+- Verify line totals and date filters.
+- Confirm linked sales affect inventory where expected.

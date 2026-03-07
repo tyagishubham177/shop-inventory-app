@@ -1,4 +1,4 @@
-﻿import { ActionLink } from "@/components/action-link";
+import { ActionLink } from "@/components/action-link";
 import { LogoutButton } from "@/components/logout-button";
 import { SectionCard } from "@/components/section-card";
 import { StatusPill } from "@/components/status-pill";
@@ -58,7 +58,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       ) : null}
 
       <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-        <SectionCard eyebrow="Phase 1 checks" title="What this dashboard proves">
+        <SectionCard eyebrow="Foundation checks" title="What this dashboard proves">
           <ul className="space-y-3">
             {protectedChecks.map((item) => (
               <li key={item} className="flex gap-3">
@@ -92,7 +92,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       </section>
 
       <section className="grid gap-4 md:grid-cols-2">
-        <SectionCard eyebrow="Next phases" title="What unlocks after auth">
+        <SectionCard eyebrow="Phase 3 now" title="What is unlocked next">
           <ul className="space-y-2">
             {phasePreview.map((item) => (
               <li
@@ -105,16 +105,17 @@ export default async function Home({ searchParams }: HomePageProps) {
           </ul>
         </SectionCard>
 
-        <SectionCard eyebrow="Human test hint" title="Quick role verification">
+        <SectionCard eyebrow="Human test hint" title="Quick verification path">
           <p>
             Sign in as staff and visit <strong>/admin</strong>. The app should redirect you back
             here with an access warning instead of showing the admin page.
           </p>
           <p className="mt-3">
-            Then sign in as admin and repeat the same step to confirm the protected route opens.
+            Then open <strong>/inventory</strong> and confirm the workspace loads for the same user.
           </p>
         </SectionCard>
       </section>
     </main>
   );
 }
+

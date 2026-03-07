@@ -4,7 +4,7 @@ A mobile-first inventory and sales web app for a small internal shop team.
 
 ## Summary
 
-This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema migration baseline, and the first Supabase-backed user lookup for app-managed auth.
+This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema migration baseline, the first Supabase-backed user lookup for app-managed auth, and the opening Phase 3 inventory workspace.
 
 The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. The v1 scope stays focused on auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over approved queries.
 
@@ -24,6 +24,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - Phase 2 schema now has an initial migration for users, categories, inventory, sales, inventory transactions, chat logs, and backups
 - Auth now checks the Supabase `users` table first and falls back to local demo users in development when `AUTH_ALLOW_DEV_DEMO_USERS` stays enabled
 - Dev seed helpers now exist for starter users and category master data
+- Phase 3 has started with inventory list, create, edit, archive, restore, and transaction logging flows
 
 ## Start here
 
@@ -31,7 +32,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 2. Review [DECISIONS.md](DECISIONS.md)
 3. Follow [TASKS.md](TASKS.md)
 4. Use the docs in [docs/](docs)
-5. Use the phase checklist in [Phase/phase2.md](Phase/phase2.md)
+5. Use the phase checklist in [Phase/phase3.md](Phase/phase3.md)
 
 ## Local development
 
@@ -124,3 +125,4 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 2. Start the app locally and sign in with `admin@local.shop` / `AdminPass123!`.
 3. Confirm the dashboard loads and `/admin` still works for the admin user.
 4. Set `AUTH_ALLOW_DEV_DEMO_USERS=false`, restart the app, and confirm the same login still works so you know the database path is active.
+

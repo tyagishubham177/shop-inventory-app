@@ -1,6 +1,6 @@
 # TASKS.md
 
-## Phase 0: bootstrap
+## Phase 0: bootstrap [done]
 
 - Initialize the Next.js app with TypeScript and Tailwind.
 - Add base UI primitives and app shell.
@@ -8,7 +8,7 @@
 - Add links to docs in `README.md`.
 - Confirm dev and prod environment separation.
 
-## Phase 1: auth
+## Phase 1: auth [done]
 
 - Create password hash and verify helpers.
 - Create session sign and verify helpers.
@@ -17,7 +17,7 @@
 - Add route protection middleware.
 - Build the login page.
 
-## Phase 2: schema
+## Phase 2: schema [done]
 
 - Create migrations for users.
 - Create migrations for category master.
@@ -27,7 +27,7 @@
 - Create migrations for chat logs.
 - Create migrations for backup logs.
 
-## Phase 3: inventory
+## Phase 3: inventory [current]
 
 - Add inventory validation.
 - Add inventory query helpers.
@@ -71,3 +71,4 @@
 - Manual verification steps written.
 - No contradiction with `DECISIONS.md`.
 - Ready for human testing.
+

@@ -43,14 +43,14 @@
 - Build sales list and create/edit screens.
 - Support manual and linked sales entry.
 
-## Phase 5: dashboard [current]
+## Phase 5: dashboard [done]
 
 - Build summary cards.
 - Add low-stock indicators.
 - Add recent activity view.
 - Add simple trend snapshots.
 
-## Phase 6: chat
+## Phase 6: chat [done]
 
 - Define supported intents.
 - Build intent parsing.
@@ -58,7 +58,7 @@
 - Build response generation.
 - Add read-only chat API route and page.
 
-## Phase 7: backups
+## Phase 7: backups [current]
 
 - Add CSV export helpers.
 - Add backup export route.

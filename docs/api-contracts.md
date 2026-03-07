@@ -1,4 +1,4 @@
-# API Contracts
+﻿# API Contracts
 
 ## Auth
 
@@ -75,9 +75,17 @@ Request:
 - question
 
 Response:
-- parsed intent
+- status (`answered` or `unsupported`)
 - answer text
+- parsed intent
 - optional tabular summary for UI rendering
+- source metadata showing whether intent parsing came from OpenAI or the deterministic fallback path
+
+Guardrails:
+- Auth required for every chat request.
+- Rate limit chat requests.
+- Reject invalid request bodies before any database access.
+- Keep every query read-only and map only to approved inventory, sales, and dashboard helpers.
 
 ## Backups
 
@@ -91,3 +99,5 @@ Creates and streams a CSV export and logs the action.
 - Return clear 4xx errors for bad requests.
 - Enforce auth and role checks on every protected route.
 - Add simple rate limiting to chat and auth endpoints.
+
+

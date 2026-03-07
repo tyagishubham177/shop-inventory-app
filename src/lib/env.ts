@@ -1,4 +1,4 @@
-function readRequiredEnv(name: string) {
+﻿function readRequiredEnv(name: string) {
   const value = process.env[name];
 
   if (!value) {
@@ -17,6 +17,7 @@ export const serverEnv = {
   supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
   openAiApiKey: process.env.OPENAI_API_KEY,
+  openAiModel: process.env.OPENAI_MODEL,
   sessionSecret: process.env.SESSION_SECRET,
 };
 
@@ -26,6 +27,8 @@ export function assertServerEnv() {
     supabaseAnonKey: readRequiredEnv("SUPABASE_ANON_KEY"),
     supabaseServiceRoleKey: readRequiredEnv("SUPABASE_SERVICE_ROLE_KEY"),
     openAiApiKey: readRequiredEnv("OPENAI_API_KEY"),
+    openAiModel: process.env.OPENAI_MODEL ?? "gpt-4.1-mini",
     sessionSecret: readRequiredEnv("SESSION_SECRET"),
   };
 }
+

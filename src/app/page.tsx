@@ -71,7 +71,7 @@ export default async function Home({ searchParams }: HomePageProps) {
                 Welcome back, {user.name}.
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-[color:var(--muted)] sm:text-lg">
-                Phase 5 turns this page into the daily dashboard, but the data connection still needs attention before the live summaries can load.
+                The dashboard still needs its live data connection before the summary cards and chat checks can load.
               </p>
             </div>
 
@@ -80,6 +80,9 @@ export default async function Home({ searchParams }: HomePageProps) {
                 Open inventory
               </ActionLink>
               <ActionLink href="/sales">Open sales</ActionLink>
+              <ActionLink href="/chat" muted>
+                Open chat
+              </ActionLink>
               <LogoutButton />
             </div>
           </div>
@@ -110,7 +113,7 @@ export default async function Home({ searchParams }: HomePageProps) {
               Daily dashboard for {user.name}.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-[color:var(--muted)] sm:text-lg">
-              Phase 5 pulls your core inventory and sales signals into one mobile-first view so the team can spot low stock, track revenue, and jump into the right workspace quickly.
+              The dashboard now pairs live inventory and sales summaries with a read-only chat workspace, so the team can spot low stock, track revenue, and ask quick questions without leaving the phone flow.
             </p>
           </div>
 
@@ -119,6 +122,9 @@ export default async function Home({ searchParams }: HomePageProps) {
               Open inventory
             </ActionLink>
             <ActionLink href="/sales">Open sales</ActionLink>
+            <ActionLink href="/chat" muted>
+              Open chat
+            </ActionLink>
             {user.role === "admin" ? <ActionLink href="/admin" muted>Open admin check</ActionLink> : null}
             <LogoutButton />
           </div>
@@ -250,6 +256,9 @@ export default async function Home({ searchParams }: HomePageProps) {
             <ActionLink href="/sales" muted>
               Open sales history
             </ActionLink>
+            <ActionLink href="/chat" muted>
+              Open chat workspace
+            </ActionLink>
             <div className="rounded-2xl bg-[color:var(--surface-strong)] p-4">
               <p className="text-xs uppercase tracking-[0.24em] text-[color:var(--muted)]">User</p>
               <p className="mt-2 text-base font-semibold text-[color:var(--foreground)]">{user.email}</p>
@@ -258,7 +267,7 @@ export default async function Home({ searchParams }: HomePageProps) {
               </p>
             </div>
             <div className="rounded-2xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
-              Chat and backup export stay in the roadmap for Phases 6 and 7, so this dashboard keeps the focus on inventory and sales today.
+              Read-only chat is live in Phase 6, and backup export stays queued for Phase 7.
             </div>
           </div>
         </SectionCard>

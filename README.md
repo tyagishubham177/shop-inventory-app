@@ -4,50 +4,61 @@ A mobile-first inventory and sales web app for a small internal shop team.
 
 ## Summary
 
-This repo is the project blueprint extracted from the design PDF.
+This repository now includes the Phase 0 implementation scaffold on top of the blueprint docs.
 
-The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. Phase 1 focuses on a clean operational core: auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over approved queries.
+The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. The v1 scope stays focused on auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over approved queries.
 
-## Proposed stack
+## Current stack
 
 - Next.js with TypeScript
-- Tailwind CSS with shadcn/ui components
+- Tailwind CSS
 - Supabase Postgres as the hosted database
-- Custom app-managed auth and sessions for internal users
-- OpenAI Responses API for intent parsing and response generation
-- Dev and prod environments from day 1
+- Custom app-managed auth and sessions
+- OpenAI API for the read-only chat flow
+- Separate dev and prod environments from day 1
 
 ## Start here
 
-- Read [AGENTS.md](AGENTS.md)
-- Review [DECISIONS.md](DECISIONS.md)
-- Follow [TASKS.md](TASKS.md)
-- Use the docs in [docs/](docs)
-- Use the detailed phase checklists in [Phase/](Phase)
+1. Read [AGENTS.md](AGENTS.md)
+2. Review [DECISIONS.md](DECISIONS.md)
+3. Follow [TASKS.md](TASKS.md)
+4. Use the docs in [docs/](docs)
+5. Use the phase checklist in [Phase/phase0.md](Phase/phase0.md)
+
+## Local development
+
+1. Install dependencies with `npm install`
+2. Create `.env.local` from `.env.example`
+3. Start the app with `npm run dev`
+4. Open `http://localhost:3000`
+
+## Scripts
+
+- `npm run dev` starts the local app
+- `npm run lint` runs ESLint
+- `npm run typecheck` runs TypeScript checks
+- `npm run build` verifies the production build
+
+## Environment notes
+
+- Keep real secrets only in `.env.local` for dev and in your deployment provider for prod.
+- `NEXT_PUBLIC_APP_URL` is safe to expose to the browser.
+- `SUPABASE_ANON_KEY` is also browser-safe when used as the public anon key.
+- `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, and `SESSION_SECRET` must stay server-only.
+- `.gitignore` already excludes local env files, so these values will not be committed unless someone force-adds them manually.
 
 ## Repo map
 
+- `src/app/` holds the Next.js app routes and global styles.
+- `src/components/` holds shared UI primitives for the app shell.
+- `src/lib/` holds shared utilities like env helpers.
 - `docs/` holds product, design, data, API, UI, deploy, test, backup, prompt, and seed guidance.
-- `agents/` holds role-focused briefs extracted from the PDF.
-- `.github/` holds optional Copilot-specific instructions.
-- `Phase/` holds implementation-phase checklists for build execution.
+- `agents/` holds role-focused briefs.
+- `Phase/` holds implementation checklists.
 
-## Keys and secrets expected later
+## Human verification for Phase 0
 
-App runtime secrets:
-- `NEXT_PUBLIC_APP_URL`
-- `SUPABASE_URL`
-- `SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `OPENAI_API_KEY`
-- `SESSION_SECRET`
-
-Platform and deployment access:
-- GitHub repo access to push branches and merge changes
-- Supabase project access for dev and prod
-- OpenAI API access for the chat feature
-- Vercel or Cloudflare access for deployment when we start implementation
-
-## Working style
-
-You are the human tester. Codex owns implementation. We keep docs as the source of truth, build phase by phase, and validate each phase before moving ahead.
+1. Confirm the app starts locally with `npm run dev`
+2. Confirm the home page loads on mobile-width and desktop-width screens
+3. Confirm the docs list in the app and repo README is easy to find
+4. Confirm dev and prod environment separation is documented before Phase 1 work starts

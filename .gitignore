@@ -5,6 +5,7 @@ out/
 dist/
 .turbo/
 coverage/
+*.tsbuildinfo
 
 # Logs
 *.log

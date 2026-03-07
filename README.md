@@ -4,7 +4,7 @@ A mobile-first inventory and sales web app for a small internal shop team.
 
 ## Summary
 
-This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema migration baseline, the first Supabase-backed user lookup for app-managed auth, and the opening Phase 3 inventory workspace.
+This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema migration baseline, the Supabase-backed auth lookup, the completed Phase 3 inventory workspace, and the active Phase 4 sales workflow.
 
 The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. The v1 scope stays focused on auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over approved queries.
 
@@ -24,7 +24,8 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - Phase 2 schema now has an initial migration for users, categories, inventory, sales, inventory transactions, chat logs, and backups
 - Auth now checks the Supabase `users` table first and falls back to local demo users in development when `AUTH_ALLOW_DEV_DEMO_USERS` stays enabled
 - Dev seed helpers now exist for starter users and category master data
-- Phase 3 has started with inventory list, create, edit, archive, restore, and transaction logging flows
+- Phase 3 inventory is complete with list, create, edit, archive, restore, and transaction logging flows
+- Phase 4 sales is now active with manual and linked sale entry, correction support, and filtered sales history
 
 ## Start here
 
@@ -32,7 +33,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 2. Review [DECISIONS.md](DECISIONS.md)
 3. Follow [TASKS.md](TASKS.md)
 4. Use the docs in [docs/](docs)
-5. Use the phase checklist in [Phase/phase3.md](Phase/phase3.md)
+5. Use the phase checklist in [Phase/phase4.md](Phase/phase4.md)
 
 ## Local development
 
@@ -99,30 +100,3 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - `Phase/` holds implementation checklists.
 - `supabase/migrations/` holds the SQL migrations that should be applied to the Supabase database.
 - `supabase/seed/` holds dev-only seed SQL helpers.
-
-## Human verification for Phase 1
-
-1. Start the app locally with `npm run dev`
-2. Open `http://localhost:3000` and confirm you are redirected to `/login`
-3. Sign in with the admin demo account shown on the login page and confirm the dashboard loads
-4. Try an invalid password and confirm the login page shows a clear error
-5. Sign in as the staff demo user and visit `/admin`, then confirm you are redirected back to `/` with an admin-only notice
-6. Sign in as the admin demo user and visit `/admin`, then confirm the page opens
-7. Use `Sign out` and confirm protected routes redirect back to `/login`
-
-## Human verification for Phase 2 schema
-
-1. Open your dev Supabase project and go to the SQL editor.
-2. Run [supabase/migrations/20260307163500_phase2_initial_schema.sql](supabase/migrations/20260307163500_phase2_initial_schema.sql).
-3. Open the table editor and confirm these tables exist: `users`, `category_master`, `inventory_products`, `sales_entries`, `inventory_transactions`, `chat_logs`, and `backups_log`.
-4. Open the database indexes view and confirm indexes exist for email, SKU, category, `sold_at`, and `created_at` lookups.
-5. Run [supabase/seed/20260307172000_dev_users.sql](supabase/seed/20260307172000_dev_users.sql) and confirm the starter users appear in `public.users`.
-6. Run [supabase/seed/20260307174000_dev_categories.sql](supabase/seed/20260307174000_dev_categories.sql) and confirm the starter categories appear in `public.category_master`.
-
-## Human verification for Phase 2 auth source
-
-1. In `.env.local`, set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SESSION_SECRET`.
-2. Start the app locally and sign in with `admin@local.shop` / `AdminPass123!`.
-3. Confirm the dashboard loads and `/admin` still works for the admin user.
-4. Set `AUTH_ALLOW_DEV_DEMO_USERS=false`, restart the app, and confirm the same login still works so you know the database path is active.
-

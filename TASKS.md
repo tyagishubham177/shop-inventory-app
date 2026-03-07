@@ -27,7 +27,7 @@
 - Create migrations for chat logs.
 - Create migrations for backup logs.
 
-## Phase 3: inventory [current]
+## Phase 3: inventory [done]
 
 - Add inventory validation.
 - Add inventory query helpers.
@@ -35,7 +35,7 @@
 - Build inventory list and create/edit screens.
 - Add archive and restore support.
 
-## Phase 4: sales
+## Phase 4: sales [current]
 
 - Add sales validation.
 - Add sales query helpers.
@@ -71,4 +71,3 @@
 - Manual verification steps written.
 - No contradiction with `DECISIONS.md`.
 - Ready for human testing.
-

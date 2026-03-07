@@ -15,9 +15,9 @@ const protectedChecks = [
 ];
 
 const phasePreview = [
-  "Inventory CRUD and stock history",
-  "Manual and linked sales entry",
+  "Sales history with manual and linked entries",
   "Dashboard summaries and low-stock alerts",
+  "Read-only chat over approved inventory and sales queries",
 ];
 
 function readStringValue(value?: string | string[]) {
@@ -39,13 +39,17 @@ export default async function Home({ searchParams }: HomePageProps) {
               Welcome back, {user.name}.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-[color:var(--muted)] sm:text-lg">
-              Phase 1 is now live with app-managed login, session cookies, and route protection
-              across the internal workspace.
+              Phases 1 to 3 are in place with app-managed auth, session cookies, route protection,
+              and the full inventory workspace. Phase 4 now opens the sales flow.
             </p>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            {user.role === "admin" ? <ActionLink href="/admin">Open admin check</ActionLink> : null}
+            <ActionLink href="/inventory" muted>
+              Open inventory
+            </ActionLink>
+            <ActionLink href="/sales">Open sales</ActionLink>
+            {user.role === "admin" ? <ActionLink href="/admin" muted>Open admin check</ActionLink> : null}
             <LogoutButton />
           </div>
         </div>
@@ -73,15 +77,11 @@ export default async function Home({ searchParams }: HomePageProps) {
           <div className="grid gap-3">
             <div className="rounded-2xl bg-[color:var(--surface-strong)] p-4">
               <p className="text-xs uppercase tracking-[0.24em] text-[color:var(--muted)]">Name</p>
-              <p className="mt-2 text-base font-semibold text-[color:var(--foreground)]">
-                {user.name}
-              </p>
+              <p className="mt-2 text-base font-semibold text-[color:var(--foreground)]">{user.name}</p>
             </div>
             <div className="rounded-2xl bg-[color:var(--surface-strong)] p-4">
               <p className="text-xs uppercase tracking-[0.24em] text-[color:var(--muted)]">Email</p>
-              <p className="mt-2 text-base font-semibold text-[color:var(--foreground)]">
-                {user.email}
-              </p>
+              <p className="mt-2 text-base font-semibold text-[color:var(--foreground)]">{user.email}</p>
             </div>
             <div className="rounded-2xl bg-[color:rgba(15,118,110,0.08)] p-4">
               <p className="text-xs uppercase tracking-[0.24em] text-[color:var(--muted)]">Role</p>
@@ -92,7 +92,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       </section>
 
       <section className="grid gap-4 md:grid-cols-2">
-        <SectionCard eyebrow="Phase 3 now" title="What is unlocked next">
+        <SectionCard eyebrow="Phase 4 now" title="What is unlocked next">
           <ul className="space-y-2">
             {phasePreview.map((item) => (
               <li
@@ -107,15 +107,13 @@ export default async function Home({ searchParams }: HomePageProps) {
 
         <SectionCard eyebrow="Human test hint" title="Quick verification path">
           <p>
-            Sign in as staff and visit <strong>/admin</strong>. The app should redirect you back
-            here with an access warning instead of showing the admin page.
+            Create one linked sale from <strong>/sales/new</strong>, then open the matching inventory product and confirm the stock dropped by the sold quantity.
           </p>
           <p className="mt-3">
-            Then open <strong>/inventory</strong> and confirm the workspace loads for the same user.
+            After that, create one manual sale and confirm it appears in <strong>/sales</strong> without changing inventory stock.
           </p>
         </SectionCard>
       </section>
     </main>
   );
 }
-

@@ -11,6 +11,7 @@ Implement sales entry and sales history workflows.
 - Sales routes
 - Manual and linked sales forms
 - Sales listing and filters
+- Sales correction flow for allowed fields
 
 ## Human verification
 
@@ -18,3 +19,4 @@ Implement sales entry and sales history workflows.
 - Create manual sale entries.
 - Verify line totals and date filters.
 - Confirm linked sales affect inventory where expected.
+- Edit a saved sale and confirm the corrected values persist.

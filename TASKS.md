@@ -23,6 +23,7 @@
 - Create migrations for category master.
 - Create migrations for inventory products.
 - Create migrations for sales entries.
+- Create migrations for inventory transactions.
 - Create migrations for chat logs.
 - Create migrations for backup logs.
 

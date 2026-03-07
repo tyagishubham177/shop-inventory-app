@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import { verifyPassword } from "@/lib/auth/password";
 import { clearRateLimit, takeRateLimitHit } from "@/lib/auth/rate-limit";
@@ -61,7 +61,20 @@ export async function POST(request: Request) {
     );
   }
 
-  const user = getUserByEmail(email);
+  let user;
+
+  try {
+    user = await getUserByEmail(email);
+  } catch (error) {
+    console.error("Failed to load auth user during login.", error);
+
+    return NextResponse.json(
+      {
+        error: "Login is temporarily unavailable. Please try again in a minute.",
+      },
+      { status: 500 },
+    );
+  }
 
   if (!user || !user.isActive) {
     return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });

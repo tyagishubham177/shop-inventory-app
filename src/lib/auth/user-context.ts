@@ -1,4 +1,4 @@
-﻿import type { UserSummary } from "@/lib/auth/types";
+import type { UserSummary } from "@/lib/auth/types";
 import { verifySessionToken } from "@/lib/auth/session";
 import { getUserById } from "@/lib/auth/users";
 
@@ -9,7 +9,7 @@ export async function resolveCurrentUserFromSessionToken(token?: string | null):
     return null;
   }
 
-  const user = getUserById(payload.sub);
+  const user = await getUserById(payload.sub);
 
   if (!user || !user.isActive) {
     return null;

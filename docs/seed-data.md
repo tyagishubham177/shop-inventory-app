@@ -12,9 +12,15 @@
 
 ## Suggested demo users
 
-- One admin user
-- One staff user
-- One optional viewer user
+- Admin: `admin@local.shop` / `AdminPass123!`
+- Staff: `staff@local.shop` / `StaffPass123!`
+- Viewer: `viewer@local.shop` / `ViewerPass123!`
+
+## Dev user seed helper
+
+- Run `supabase/seed/20260307172000_dev_users.sql` in the dev Supabase project only.
+- This inserts the starter admin, staff, and viewer users into `public.users`.
+- Do not run this seed file in production.
 
 ## Suggested demo inventory
 

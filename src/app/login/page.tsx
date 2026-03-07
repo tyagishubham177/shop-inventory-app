@@ -1,4 +1,4 @@
-﻿import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { LoginForm } from "@/components/login-form";
 import { StatusPill } from "@/components/status-pill";
@@ -35,12 +35,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center gap-6 px-4 py-8 sm:px-6 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-8 lg:px-8">
       <section className="overflow-hidden rounded-[32px] border border-[color:var(--border)] bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,247,237,0.92))] p-6 shadow-[var(--shadow)] sm:p-8">
-        <StatusPill label="Phase 1 auth" />
+        <StatusPill label="Auth foundation" />
         <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
           Sign in to the shop workspace.
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-[color:var(--muted)] sm:text-lg">
-          This phase adds app-managed login, signed sessions, and role-aware route protection for
+          Sign-in uses app-managed passwords, signed sessions, and role-aware route protection for
           the internal team.
         </p>
 
@@ -52,17 +52,17 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             <ul className="mt-4 space-y-3 text-sm leading-6 text-[color:var(--muted)]">
               <li>Signed cookie sessions for protected pages</li>
               <li>Server-side current-user resolution</li>
-              <li>Role checks for admin-only routes</li>
+              <li>Supabase-backed user lookup with dev fallback</li>
             </ul>
           </div>
 
           <div className="rounded-[28px] bg-[color:var(--surface-strong)] p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]">
-              Next phase swap
+              Dev auth source
             </p>
             <p className="mt-4 text-sm leading-6 text-[color:var(--muted)]">
-              Phase 2 will replace the temporary local demo-user source with real records from the
-              users table in Supabase.
+              Phase 2 now reads real records from the Supabase users table. When demo accounts stay
+              enabled in development, they remain available as a local fallback.
             </p>
           </div>
         </div>
@@ -77,8 +77,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               Dev demo accounts
             </p>
             <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-              These accounts are available only in local development so Phase 1 can be tested
-              before the real database user table lands.
+              These accounts stay available in development as a fallback, and the same credentials
+              can also be inserted into the dev users table with the seed SQL file.
             </p>
             <div className="mt-4 grid gap-3">
               {demoCredentials.map((credential) => (

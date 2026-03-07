@@ -1,10 +1,10 @@
-# Shop Inventory App
+﻿# Shop Inventory App
 
 A mobile-first inventory and sales web app for a small internal shop team.
 
 ## Summary
 
-This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema migration baseline, the Supabase-backed auth lookup, the completed Phase 3 inventory workspace, and the active Phase 4 sales workflow.
+This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema migration baseline, the Supabase-backed auth lookup, the completed Phase 3 inventory workspace, the completed Phase 4 sales workflow, and the active Phase 5 dashboard implementation branch.
 
 The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. The v1 scope stays focused on auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over approved queries.
 
@@ -25,7 +25,8 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - Auth now checks the Supabase `users` table first and falls back to local demo users in development when `AUTH_ALLOW_DEV_DEMO_USERS` stays enabled
 - Dev seed helpers now exist for starter users and category master data
 - Phase 3 inventory is complete with list, create, edit, archive, restore, and transaction logging flows
-- Phase 4 sales is now active with manual and linked sale entry, correction support, and filtered sales history
+- Phase 4 sales is complete with manual and linked sale entry, correction support, and filtered sales history
+- Phase 5 dashboard work is now active with summary cards, low-stock alerts, recent activity, and simple trend snapshots
 
 ## Start here
 
@@ -33,7 +34,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 2. Review [DECISIONS.md](DECISIONS.md)
 3. Follow [TASKS.md](TASKS.md)
 4. Use the docs in [docs/](docs)
-5. Use the phase checklist in [Phase/phase4.md](Phase/phase4.md)
+5. Use the phase checklist in [Phase/phase5.md](Phase/phase5.md)
 
 ## Local development
 
@@ -100,3 +101,4 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - `Phase/` holds implementation checklists.
 - `supabase/migrations/` holds the SQL migrations that should be applied to the Supabase database.
 - `supabase/seed/` holds dev-only seed SQL helpers.
+

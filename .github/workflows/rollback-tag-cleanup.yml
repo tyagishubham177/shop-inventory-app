@@ -1,0 +1,72 @@
+name: Rollback Tag Cleanup
+
+on:
+  workflow_run:
+    workflows:
+      - Rollback Tags
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup-rollback-tags:
+    name: cleanup-rollback-tags
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Fetch all tags
+        run: git fetch --force --tags origin
+
+      - name: Delete expired rollback tags
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          PREFIX="rollback-"
+          RETAIN_COUNT=5
+          DELETE_AFTER_DAYS=7
+          THRESHOLD_EPOCH="$(date -u -d "${DELETE_AFTER_DAYS} days ago" +%s)"
+
+          mapfile -t TAG_LINES < <(git for-each-ref \
+            --sort=-taggerdate \
+            --format='%(refname:strip=2)|%(taggerdate:iso8601)' \
+            "refs/tags/${PREFIX}*")
+
+          if [ "${#TAG_LINES[@]}" -eq 0 ]; then
+            echo "No rollback tags found."
+            exit 0
+          fi
+
+          for INDEX in "${!TAG_LINES[@]}"; do
+            IFS='|' read -r TAG_NAME TAG_DATE <<< "${TAG_LINES[$INDEX]}"
+
+            if [ "${INDEX}" -lt "${RETAIN_COUNT}" ]; then
+              echo "Keeping ${TAG_NAME}: within newest ${RETAIN_COUNT} rollback tags."
+              continue
+            fi
+
+            if [ -z "${TAG_DATE}" ]; then
+              echo "Skipping ${TAG_NAME}: missing tagger date."
+              continue
+            fi
+
+            TAG_EPOCH="$(date -u -d "${TAG_DATE}" +%s)"
+
+            if [ "${TAG_EPOCH}" -gt "${THRESHOLD_EPOCH}" ]; then
+              echo "Keeping ${TAG_NAME}: not older than ${DELETE_AFTER_DAYS} days."
+              continue
+            fi
+
+            echo "Deleting ${TAG_NAME}: older than ${DELETE_AFTER_DAYS} days and outside retention window."
+            git push origin ":refs/tags/${TAG_NAME}"
+            git tag -d "${TAG_NAME}"
+          done

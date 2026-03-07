@@ -1,4 +1,4 @@
-# TASKS.md
+﻿# TASKS.md
 
 ## Phase 0: bootstrap [done]
 
@@ -35,7 +35,7 @@
 - Build inventory list and create/edit screens.
 - Add archive and restore support.
 
-## Phase 4: sales [current]
+## Phase 4: sales [done]
 
 - Add sales validation.
 - Add sales query helpers.
@@ -43,7 +43,7 @@
 - Build sales list and create/edit screens.
 - Support manual and linked sales entry.
 
-## Phase 5: dashboard
+## Phase 5: dashboard [current]
 
 - Build summary cards.
 - Add low-stock indicators.
@@ -64,6 +64,7 @@
 - Add backup export route.
 - Log backup actions.
 - Document restore flow.
+- Finish the final mobile verification pass across shipped flows.
 
 ## Definition of done for each phase
 
@@ -71,3 +72,4 @@
 - Manual verification steps written.
 - No contradiction with `DECISIONS.md`.
 - Ready for human testing.
+

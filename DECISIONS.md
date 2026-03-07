@@ -61,24 +61,24 @@ The LLM feature is read-only in v1.
 
 Why:
 - Lower risk
-- Easier validation
+- Easier rollout
 - Safer for inventory data
 
 Consequence:
-The model must return structured intents only and must never issue write operations.
+The model may analyze data and generate read-only SQL, but it must never issue write operations.
 
-## D-006: Structured intent pipeline
+## D-006: Controlled read-only SQL pipeline
 
 Decision:
-Use strict JSON intents that map to approved query builders.
+Allow the model to generate flexible PostgreSQL SELECT queries, but execute them only through a low-privilege read-only chat layer.
 
 Why:
-- Prevents arbitrary SQL generation
-- Makes behavior testable
-- Reduces hallucination risk
+- The intent catalog was too brittle for broader internal analytics questions
+- Direct SQL is more expressive for aggregates, joins, and ad hoc filters
+- The internal-user context lowers adversarial pressure, but not to zero
 
 Consequence:
-Intent schemas and fallback behavior must be documented.
+Chat must query only approved read-only views, run under a restricted database role, validate single-statement SELECT or WITH queries, retry failed queries with execution feedback, and keep a deterministic fallback path during rollout.
 
 ## D-007: Dev and prod from day 1
 
@@ -108,7 +108,8 @@ Product records are text-first in early phases.
 
 ## Do not break these
 
-- Do not introduce arbitrary model SQL.
+- Do not allow chat to mutate data.
 - Do not bypass auth or role checks.
+- Do not expose unrestricted database access from the client.
 - Do not add billing, barcode scanning, or multi-shop support in v1.
 - Do not add infra that raises setup cost without a phase-approved need.

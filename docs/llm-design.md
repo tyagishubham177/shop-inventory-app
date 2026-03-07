@@ -1,8 +1,8 @@
-﻿# LLM Design
+# LLM Design
 
 ## Goal
 
-Answer common inventory and sales questions in plain language without allowing the model to run arbitrary SQL or write data.
+Answer inventory, sales, dashboard, and recent-activity questions in plain language with a direct read-only SQL workflow that stays non-mutating.
 
 ## Supported languages
 
@@ -12,69 +12,47 @@ Answer common inventory and sales questions in plain language without allowing t
 
 ## Core rule
 
-The model must output strict JSON intent objects for interpretation. It must not output SQL.
-
-## v1 supported intents
-
-- inventory_count
-- inventory_search
-- low_stock_list
-- product_lookup
-- sales_total
-- sales_by_category
-- sales_by_brand
-- recent_activity_summary
-- dashboard_summary
-- unsupported_request
-
-## Supported time ranges
-
-- today
-- yesterday
-- this_week
-- last_7_days
-- last_week
-- this_month
-- last_month
-- all_time
-
-## Structured intent notes
-
-- `filters.dateFrom` and `filters.dateTo` should be set when the user gives an explicit date range.
-- `requestedMetrics` keeps extra asks such as totals, top product, top brand, or top category inside the same query.
-- Explicit dates should win over vague labels like `last_week` when both appear in the question.
+The model may generate read-only PostgreSQL queries, but only against approved `chat_*` views and only through the controlled chat execution function.
 
 ## Processing pipeline
 
 1. Normalize the user question.
-2. Ask the model for strict JSON only.
-3. Validate the JSON against the supported intent shape.
-4. Map the intent to approved query helpers.
-5. Execute the query.
-6. Fall back to deterministic parsing if OpenAI intent extraction fails.
-7. Generate the final answer deterministically from approved query results.
+2. Ask the model for one read-only SQL query plus a short planning summary.
+3. Validate that the SQL is a single `SELECT` or `WITH` statement with no write/admin patterns.
+4. Execute it through `execute_chat_read_query`, which runs as the low-privilege `chat_query_role`.
+5. If the query fails or returns no rows, send the execution feedback back to the model for a repair attempt.
+6. Summarize the final result set for the user.
+7. Log the question, SQL attempts, and response.
+8. Fall back to the legacy intent pipeline if direct SQL planning is unavailable during rollout.
+
+## Approved read-only objects
+
+- `chat_inventory_products`
+- `chat_sales_entries`
+- `chat_inventory_transactions`
+- `chat_recent_activity`
 
 ## Guardrails
 
-- Strip markdown fences before JSON parsing.
-- Reject unknown intents.
-- Reject missing required filters for product lookup.
-- Use timeouts and fallback responses.
-- Log successful, unsupported, and failed chat requests when the database-backed user exists.
+- Strip markdown fences before SQL or JSON parsing.
+- Reject multiple statements.
+- Reject comments and obvious write/admin keywords.
+- Reject access to system catalogs.
+- Execute through a low-privilege function owner rather than the full service role.
+- Keep statement timeouts short.
 - Treat each v1 chat request as stateless.
 - Never allow chat to create, update, archive, restore, export, or delete records.
 
-## Context and normalization
+## Repair loop notes
 
-- Support common synonyms like shoes and shoe, tshirt and t-shirt, lower and track pant.
-- Support date phrases like today, yesterday, this week, last week, and last month.
-- Keep brand and category matching tolerant but explicit.
-- Prefer active inventory unless the user explicitly asks about archived products.
+- Retry when SQL validation fails, execution errors, or the result set comes back empty.
+- Include the last SQL text and failure message in the repair prompt.
+- Keep retries bounded so the route stays responsive.
 
 ## UI output notes
 
 - The chat response may include a small tabular summary for the UI.
-- The UI may expose the parsed intent to make human verification easier in development.
+- The UI may expose the final SQL and retry history to make human verification easier in development.
 
 ## Follow-up behavior
 

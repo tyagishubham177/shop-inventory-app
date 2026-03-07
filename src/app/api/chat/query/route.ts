@@ -1,10 +1,10 @@
-﻿import { cookies, headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { takeRateLimitHit } from "@/lib/auth/rate-limit";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/session";
 import { resolveCurrentUserFromSessionToken } from "@/lib/auth/user-context";
-import { runChatQuery } from "@/lib/chat/service";
+import { runFlexibleChatQuery } from "@/lib/chat/flexible-service";
 import { validateChatQueryInput } from "@/lib/chat/validation";
 
 async function getRequestUser() {
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await runChatQuery(validation.data.question, user);
+    const result = await runFlexibleChatQuery(validation.data.question, user);
 
     return NextResponse.json(result);
   } catch (error) {
@@ -71,4 +71,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

@@ -27,8 +27,8 @@ If files disagree, follow the higher item in this list and update lower files to
 - Use Next.js and TypeScript.
 - Use Supabase Postgres for storage.
 - Use custom app-managed auth with role checks.
-- Do not let the model generate arbitrary SQL.
-- Convert natural-language questions into strict intent JSON, then map to approved query functions.
+- Keep chat read-only even when it generates SQL.
+- Route chat SQL only through approved read-only views and a low-privilege execution layer.
 - Prefer simple server routes and explicit validation.
 
 ## Working rules for agents
@@ -47,8 +47,8 @@ If files disagree, follow the higher item in this list and update lower files to
 
 ## Do not break these
 
-- Do not enforce strict inventory-sales reconciliation in v1.
-- Do not execute raw model-generated SQL.
+- Do not allow chat to create, update, archive, restore, or delete records.
 - Do not bypass role checks.
 - Do not introduce image uploads in v1.
+- Do not expose unrestricted database access from the client.
 - Do not add unnecessary infrastructure such as Docker or local Postgres unless explicitly approved.

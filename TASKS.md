@@ -1,4 +1,4 @@
-﻿# TASKS.md
+# TASKS.md
 
 ## Phase 0: bootstrap [done]
 
@@ -52,11 +52,11 @@
 
 ## Phase 6: chat [done]
 
-- Define supported intents.
-- Build intent parsing.
-- Build query mapping.
-- Build response generation.
-- Add read-only chat API route and page.
+- Add approved chat read views and a read-only SQL RPC.
+- Build SQL planning and repair prompts.
+- Add direct read-only chat execution.
+- Add result summarization and debug visibility.
+- Keep a legacy fallback path during rollout.
 
 ## Phase 7: backups [current]
 
@@ -72,4 +72,3 @@
 - Manual verification steps written.
 - No contradiction with `DECISIONS.md`.
 - Ready for human testing.
-

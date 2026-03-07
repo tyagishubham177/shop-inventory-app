@@ -1,0 +1,96 @@
+const CHAT_SQL_OBJECTS = [
+  {
+    name: "chat_inventory_products",
+    description: "Inventory catalog with stock, pricing, archive status, and low-stock helper fields.",
+    columns: [
+      "id uuid",
+      "sku text",
+      "name text",
+      "brand text nullable",
+      "category_id uuid",
+      "category_name text",
+      "size text nullable",
+      "color text nullable",
+      "purchase_price numeric",
+      "selling_price numeric",
+      "current_stock integer",
+      "reorder_level integer",
+      "is_low_stock boolean",
+      "is_archived boolean",
+      "location text nullable",
+      "notes text nullable",
+      "created_at timestamptz",
+      "updated_at timestamptz",
+    ],
+  },
+  {
+    name: "chat_sales_entries",
+    description: "Sales lines for both linked and manual sales.",
+    columns: [
+      "id uuid",
+      "product_id uuid nullable",
+      "product_name text",
+      "category_name text",
+      "brand text nullable",
+      "size text nullable",
+      "color text nullable",
+      "quantity integer",
+      "unit_price numeric",
+      "line_total numeric",
+      "sale_mode text linked|manual",
+      "sold_at timestamptz",
+      "sold_on date",
+      "created_by uuid",
+      "notes text nullable",
+    ],
+  },
+  {
+    name: "chat_inventory_transactions",
+    description: "Inventory transaction history with product snapshots and actor names.",
+    columns: [
+      "id uuid",
+      "product_id uuid",
+      "product_sku text",
+      "product_name text",
+      "category_name text",
+      "transaction_type text",
+      "quantity_delta integer",
+      "reason text",
+      "performed_by uuid",
+      "performed_by_name text",
+      "created_at timestamptz",
+    ],
+  },
+  {
+    name: "chat_recent_activity",
+    description: "Unified recent activity feed combining sales and inventory events.",
+    columns: [
+      "happened_at timestamptz",
+      "activity_type text",
+      "title text",
+      "details text",
+    ],
+  },
+] as const;
+
+export const CHAT_SQL_ALLOWED_OBJECT_NAMES = CHAT_SQL_OBJECTS.map((item) => item.name);
+
+export const CHAT_SQL_SCHEMA_CONTEXT = [
+  "Allowed SQL objects for chat:",
+  ...CHAT_SQL_OBJECTS.map((item) => {
+    return [
+      `- ${item.name}: ${item.description}`,
+      ...item.columns.map((column) => `  - ${column}`),
+    ].join("\n");
+  }),
+  "Rules:",
+  "- Use only these chat_* views. Do not reference base tables.",
+  "- Generate exactly one PostgreSQL statement that starts with SELECT or WITH.",
+  "- Never generate INSERT, UPDATE, DELETE, DROP, ALTER, TRUNCATE, CREATE, GRANT, or other write/admin SQL.",
+  "- Default inventory questions to active products with is_archived = false unless the user explicitly asks for archived products.",
+  "- Use ILIKE for fuzzy text matching when exact equality is unlikely.",
+  "- Use sold_on for date-only filtering and sold_at or happened_at for timestamp ordering.",
+  "- If the user asks for recent activity, prefer chat_recent_activity.",
+  "- Return concise aliases for aggregated columns so the final answer is readable.",
+  "- The current date in SQL is current_date and the current timestamp is current_timestamp.",
+].join("\n");

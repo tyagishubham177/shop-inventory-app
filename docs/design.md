@@ -5,7 +5,7 @@
 - Next.js app for UI and route handlers
 - Supabase Postgres for the database
 - Custom password and session handling in the app layer
-- OpenAI Responses API for intent parsing and answer phrasing
+- OpenAI Responses API for SQL planning, repair, and result summarization
 - Mobile-first UI with simple admin and staff flows
 
 ## Primary flows
@@ -33,9 +33,12 @@
 ### Chat flow
 
 1. User asks a question in English, Hindi, or Hinglish.
-2. Model converts the question into a strict intent object.
-3. Backend maps that intent to approved query helpers.
-4. Backend sends query results back to the model for a concise answer.
+2. Backend asks the model to generate a single read-only SQL query against approved chat views.
+3. Backend validates the SQL shape before execution.
+4. Supabase runs the query through a low-privilege function owner that can read chat views but cannot write data.
+5. If the SQL fails or comes back empty, backend sends the execution feedback back to the model for a repair attempt.
+6. Backend summarizes the final result set for the UI and logs the query plan.
+7. If direct SQL planning is unavailable, backend can fall back to the legacy intent pipeline during rollout.
 
 ## Environments
 
@@ -57,3 +60,4 @@ Never share secrets across environments.
 - Prefer text-first workflows.
 - Keep forms short and forgiving.
 - Avoid over-abstracted code in early phases.
+- Keep chat read-only even though it generates SQL directly.

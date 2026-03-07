@@ -1,4 +1,4 @@
-﻿# Shop Inventory App
+# Shop Inventory App
 
 A mobile-first inventory and sales web app for a small internal shop team.
 
@@ -6,7 +6,7 @@ A mobile-first inventory and sales web app for a small internal shop team.
 
 This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema baseline, the Supabase-backed auth lookup, the completed Phase 3 inventory workspace, the completed Phase 4 sales workflow, the completed Phase 5 dashboard, and the completed Phase 6 read-only chat workspace.
 
-The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. The v1 scope stays focused on auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over approved queries.
+The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. The v1 scope stays focused on auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over controlled read-only database views.
 
 ## Current stack
 
@@ -14,7 +14,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - Tailwind CSS
 - Supabase Postgres as the hosted database
 - Custom app-managed auth and sessions
-- OpenAI API for the read-only chat flow
+- OpenAI API for read-only SQL planning, repair, and summarization
 - Separate dev and prod environments from day 1
 
 ## Current phase status
@@ -27,7 +27,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - Phase 3 inventory is complete with list, create, edit, archive, restore, and transaction logging flows
 - Phase 4 sales is complete with manual and linked sale entry, correction support, and filtered sales history
 - Phase 5 dashboard is complete with summary cards, low-stock alerts, recent activity, and trend snapshots
-- Phase 6 chat is complete with strict intent parsing, approved query mapping, safe fallback behavior, and a mobile-first `/chat` page
+- Phase 6 chat is complete with direct read-only SQL planning, execution through approved chat views, retry-on-failure behavior, and a mobile-first `/chat` page
 - Phase 7 backups are next
 
 ## Start here
@@ -43,7 +43,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 1. Install dependencies with `npm install`
 2. Create `.env.local` from `.env.example`
 3. Add your Supabase project URL, service role key, and OpenAI key to `.env.local`
-4. Run the dev user seed, category seed, and Phase 6 inventory or sales seed in your dev Supabase project
+4. Run the dev user seed, category seed, Phase 6 inventory or sales seed, and the Phase 6 direct-chat SQL migration in your dev Supabase project
 5. Start the app with `npm run dev`
 6. Open `http://localhost:3000`
 
@@ -91,7 +91,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - `SUPABASE_ANON_KEY` is browser-safe when used as the public anon key.
 - `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, and `SESSION_SECRET` must stay server-only.
 - `OPENAI_MODEL` is optional and defaults to `gpt-4.1-mini` in this repo.
-- `SUPABASE_SERVICE_ROLE_KEY` is required for server-side user lookups against the app-managed `users` table.
+- `SUPABASE_SERVICE_ROLE_KEY` is required for server-side user lookups against the app-managed `users` table and the read-only chat SQL RPC.
 - `AUTH_ALLOW_DEV_DEMO_USERS` is optional and only affects development fallback users.
 - `.gitignore` already excludes local env files, so these values will not be committed unless someone force-adds them manually.
 
@@ -105,4 +105,3 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - `Phase/` holds implementation checklists.
 - `supabase/migrations/` holds the SQL migrations that should be applied to the Supabase database.
 - `supabase/seed/` holds dev-only seed SQL helpers.
-

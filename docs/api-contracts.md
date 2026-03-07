@@ -1,4 +1,4 @@
-﻿# API Contracts
+# API Contracts
 
 ## Auth
 
@@ -77,15 +77,17 @@ Request:
 Response:
 - status (`answered` or `unsupported`)
 - answer text
-- parsed intent
-- optional tabular summary for UI rendering
-- source metadata showing whether intent parsing came from OpenAI or the deterministic fallback path
+- optional table with rows, columns, and truncation metadata
+- optional `queryPlan` containing final SQL and retry history for development verification
+- optional legacy `parsedIntent` when the fallback path is used
+- source metadata showing whether the primary path was SQL planning or the legacy fallback
 
 Guardrails:
 - Auth required for every chat request.
 - Rate limit chat requests.
 - Reject invalid request bodies before any database access.
-- Keep every query read-only and map only to approved inventory, sales, and dashboard helpers.
+- Keep every query read-only.
+- Run generated SQL only through the approved chat execution RPC and approved read-only views.
 
 ## Backups
 
@@ -99,5 +101,3 @@ Creates and streams a CSV export and logs the action.
 - Return clear 4xx errors for bad requests.
 - Enforce auth and role checks on every protected route.
 - Add simple rate limiting to chat and auth endpoints.
-
-

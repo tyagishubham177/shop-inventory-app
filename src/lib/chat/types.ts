@@ -1,4 +1,4 @@
-﻿export type ChatIntentName =
+export type ChatIntentName =
   | "inventory_count"
   | "inventory_search"
   | "low_stock_list"
@@ -54,15 +54,36 @@ export type ChatTable = {
   caption: string;
   columns: string[];
   rows: string[][];
+  rowCount?: number;
+  truncated?: boolean;
+};
+
+export type ChatSqlAttempt = {
+  stage: "generate" | "repair";
+  sql: string;
+  summary: string | null;
+  outcome: "planned" | "executed" | "empty" | "failed";
+  error: string | null;
+  rowCount: number | null;
+  truncated: boolean | null;
+};
+
+export type ChatQueryPlan = {
+  mode: "sql";
+  finalSql: string | null;
+  summary: string | null;
+  attempts: ChatSqlAttempt[];
+  resultPreview: string | null;
 };
 
 export type ChatQueryResult = {
   status: "answered" | "unsupported";
   answer: string;
-  parsedIntent: ChatIntent;
+  parsedIntent: ChatIntent | null;
   table: ChatTable | null;
   source: {
-    intent: "openai" | "heuristic";
-    answer: "openai" | "fallback";
+    intent: "openai" | "heuristic" | "sql";
+    answer: "openai" | "fallback" | "deterministic";
   };
+  queryPlan?: ChatQueryPlan | null;
 };

@@ -1,4 +1,4 @@
-﻿# UI Spec
+# UI Spec
 
 ## Design goals
 
@@ -50,7 +50,8 @@
 - Suggested example questions
 - Answer area with optional result summary table
 - Empty state explaining read-only limits
-- Development-friendly parsed intent panel for verification
+- Development-friendly SQL panel showing final SQL and retry history
+- Legacy parsed-intent panel only when the fallback path is used
 
 ## UI behavior notes
 
@@ -59,4 +60,3 @@
 - Keep table-heavy layouts collapsible on small screens.
 - Show role-limited actions only to allowed users.
 - Keep button contrast readable on both light and dark button treatments.
-

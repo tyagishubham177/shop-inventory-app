@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useTransition } from "react";
 
@@ -86,7 +86,7 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
         />
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm leading-6 text-[color:var(--muted)]">
-            This chat is stateless and read-only. It handles exact date ranges, manual or linked sales filters, and inventory or dashboard questions.
+            Chat now plans read-only SQL against approved database views, retries when a query fails, and stays safely non-mutating.
           </p>
           <button
             type="button"
@@ -136,6 +136,11 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
               <div className="overflow-hidden rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface-strong)]">
                 <div className="border-b border-[color:var(--border)] px-4 py-3 text-sm font-semibold text-[color:var(--foreground)]">
                   {result.table.caption}
+                  {typeof result.table.rowCount === "number" ? (
+                    <span className="ml-2 text-xs font-medium text-[color:var(--muted)]">
+                      {result.table.truncated ? `Showing ${result.table.rows.length} of ${result.table.rowCount}+ rows` : `${result.table.rowCount} rows`}
+                    </span>
+                  ) : null}
                 </div>
                 <div className="overflow-x-auto">
                   <table className="min-w-full border-collapse text-left text-sm">
@@ -167,25 +172,68 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
               </div>
             ) : null}
 
-            <details className="rounded-3xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
-              <summary className="cursor-pointer font-semibold text-[color:var(--foreground)]">
-                See parsed intent
-              </summary>
-              <pre className="mt-3 overflow-x-auto whitespace-pre-wrap text-xs leading-6">
-                {JSON.stringify(result.parsedIntent, null, 2)}
-              </pre>
-              <p className="mt-2 text-xs">
-                Intent source: {result.source.intent}. Answer source: {result.source.answer}.
-              </p>
-            </details>
+            {result.queryPlan ? (
+              <details className="rounded-3xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
+                <summary className="cursor-pointer font-semibold text-[color:var(--foreground)]">
+                  See SQL plan and retries
+                </summary>
+                <div className="mt-3 grid gap-3">
+                  <p className="text-xs leading-6">
+                    Planner source: {result.source.intent}. Answer source: {result.source.answer}.
+                  </p>
+                  {result.queryPlan.summary ? (
+                    <p className="rounded-2xl bg-[color:var(--surface-strong)] px-3 py-2 text-xs leading-6 text-[color:var(--foreground)]">
+                      {result.queryPlan.summary}
+                    </p>
+                  ) : null}
+                  {result.queryPlan.finalSql ? (
+                    <pre className="overflow-x-auto rounded-2xl bg-slate-950 px-4 py-3 text-xs leading-6 text-slate-100">
+                      {result.queryPlan.finalSql}
+                    </pre>
+                  ) : null}
+                  <div className="grid gap-3">
+                    {result.queryPlan.attempts.map((attempt, index) => (
+                      <div
+                        key={`${attempt.stage}-${index}`}
+                        className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-strong)] px-4 py-3"
+                      >
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--primary)]">
+                          Attempt {index + 1}: {attempt.stage} / {attempt.outcome}
+                        </p>
+                        {attempt.summary ? <p className="mt-2 text-xs leading-6 text-[color:var(--foreground)]">{attempt.summary}</p> : null}
+                        <pre className="mt-2 overflow-x-auto rounded-2xl bg-slate-950 px-3 py-2 text-[11px] leading-5 text-slate-100">
+                          {attempt.sql}
+                        </pre>
+                        <p className="mt-2 text-xs leading-6">
+                          {attempt.error
+                            ? `Error: ${attempt.error}`
+                            : `Rows: ${attempt.rowCount ?? 0}${attempt.truncated ? "+" : ""}`}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </details>
+            ) : result.parsedIntent ? (
+              <details className="rounded-3xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
+                <summary className="cursor-pointer font-semibold text-[color:var(--foreground)]">
+                  See legacy parsed intent
+                </summary>
+                <pre className="mt-3 overflow-x-auto whitespace-pre-wrap text-xs leading-6">
+                  {JSON.stringify(result.parsedIntent, null, 2)}
+                </pre>
+                <p className="mt-2 text-xs">
+                  Intent source: {result.source.intent}. Answer source: {result.source.answer}.
+                </p>
+              </details>
+            ) : null}
           </div>
         ) : (
           <p className="mt-4 text-sm leading-6 text-[color:var(--muted)]">
-            Start with a stock, product, sales, or dashboard question. Unsupported requests will stay safely read-only.
+            Start with a stock, product, sales, or activity question. Chat will stay read-only even when it plans SQL directly.
           </p>
         )}
       </div>
     </div>
   );
 }
-

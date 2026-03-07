@@ -1,4 +1,4 @@
-﻿# Test Plan
+# Test Plan
 
 ## Test levels
 
@@ -32,7 +32,8 @@
 - Supported questions return answers
 - Unsupported questions fail safely
 - No write action is possible through chat
-- Parsed intent looks sensible for the question asked
+- Generated SQL stays on approved `chat_*` views
+- Retry history is visible when the first SQL attempt fails or comes back empty
 
 ### Backup export
 
@@ -41,7 +42,7 @@
 
 ## Phase 6 seeded chat checks
 
-Use the Phase 6 dev seed file before running these checks.
+Use the Phase 6 dev seed file before running these checks, then apply the direct-chat SQL migration.
 
 - Ask `What are total sales today?` and expect 6646 INR from 4 sales lines and 7 units.
 - Ask `Which brand sold the most in the last 7 days?` and expect `SwiftStep`.
@@ -50,7 +51,8 @@ Use the Phase 6 dev seed file before running these checks.
 - Ask `Find Air Runner Pro.` and expect stock 18 and selling price 1900 INR.
 - Ask `Show the low-stock products right now.` and confirm low-stock items include City Walk Classic, Trail Grip X, Winter Puff Vest, Everyday Cotton Tee Black, Gym Active Jogger, Linen Weekend Shirt, and Wool Scarf Grey.
 - Ask `Show recent activity on the dashboard.` and confirm the answer reflects seeded sales and inventory transactions.
-- Ask a Hinglish prompt like `last 7 days me kaunsi brand sabse zyada biki?` and confirm it still resolves to the sales-by-brand intent.
+- Ask a Hinglish prompt like `last 7 days me kaunsi brand sabse zyada biki?` and confirm it still resolves correctly.
+- Open the SQL panel and confirm the final query only references `chat_inventory_products`, `chat_sales_entries`, `chat_inventory_transactions`, or `chat_recent_activity`.
 - Ask an unsupported write request like `Archive Air Runner Pro` and confirm the answer says chat is read-only.
 
 ## Human tester notes
@@ -60,4 +62,3 @@ For each phase, record:
 - what passed
 - what failed
 - any screenshots or edge cases worth keeping
-

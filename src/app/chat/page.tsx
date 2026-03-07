@@ -1,4 +1,4 @@
-﻿import { ActionLink } from "@/components/action-link";
+import { ActionLink } from "@/components/action-link";
 import { ChatWorkspace } from "@/components/chat/chat-workspace";
 import { LogoutButton } from "@/components/logout-button";
 import { SectionCard } from "@/components/section-card";
@@ -7,8 +7,8 @@ import { requireCurrentUser } from "@/lib/auth/current-user";
 
 const EXAMPLE_QUESTIONS = [
   "Show the low-stock products right now.",
-  "Find Air Runner Pro.",
-  "How many T-Shirts do we have in stock?",
+  "Find Air Runner Pro and show its current stock, selling price, and last updated time.",
+  "How many T-Shirts do we have in stock across active products?",
   "What are total sales today?",
   "How much manual revenue came from Mar 1 to Mar 7, and which product sold most?",
   "Show recent activity on the dashboard.",
@@ -24,10 +24,10 @@ export default async function ChatPage() {
           <div className="max-w-3xl">
             <StatusPill label={`Signed in as ${user.role}`} />
             <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-              Read-only chat for fast stock and sales questions.
+              Read-only chat with direct SQL planning for faster, broader answers.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-[color:var(--muted)] sm:text-lg">
-              Phase 6 keeps the model inside a strict intent catalog, then answers only from approved inventory, sales, and dashboard queries.
+              The chat now asks the model to generate read-only SQL against approved database views, retries with execution feedback when needed, and still blocks any write action.
             </p>
           </div>
 
@@ -52,17 +52,17 @@ export default async function ChatPage() {
         <div className="grid gap-4">
           <SectionCard eyebrow="Guardrails" title="What chat can and cannot do">
             <ul className="space-y-2">
-              <li>It can answer inventory counts, product lookups, low-stock checks, sales totals, brand and category sales breakdowns, recent activity, and dashboard summaries.</li>
-              <li>It supports English, Hindi, and Hinglish phrasing, but each request is treated as a fresh question.</li>
+              <li>It can generate flexible read-only SQL for inventory, sales, dashboard-style, and recent-activity questions.</li>
+              <li>It retries when the first SQL query fails or comes back empty, and you can inspect the final SQL plus retries in the UI.</li>
               <li>It cannot create, update, archive, restore, export, or delete anything.</li>
             </ul>
           </SectionCard>
 
-          <SectionCard eyebrow="Verification" title="What to check after seeding data">
+          <SectionCard eyebrow="Verification" title="What to check after running the migration">
             <ul className="space-y-2">
-              <li>Ask one question for each supported intent and confirm the answer stays consistent with inventory and sales screens.</li>
-              <li>Try an unsupported write request like changing stock and confirm the response stays safely read-only.</li>
-              <li>Open the parsed intent panel and confirm the model mapped the question to the expected intent.</li>
+              <li>Ask broader aggregate questions and confirm the generated SQL still maps to the approved chat views only.</li>
+              <li>Try a write request like changing stock and confirm the response clearly stays read-only.</li>
+              <li>Open the SQL panel and confirm retries are visible whenever the first query needs repair.</li>
             </ul>
           </SectionCard>
         </div>
@@ -70,5 +70,3 @@ export default async function ChatPage() {
     </main>
   );
 }
-
-

@@ -83,6 +83,9 @@ Note:
 - status
 - created_at
 
+Note:
+`parsed_intent_json` now stores chat execution metadata for both legacy intent parsing and direct SQL planning.
+
 ### backups_log
 
 - id
@@ -92,11 +95,40 @@ Note:
 - status
 - created_at
 
+## Chat read-only views
+
+### chat_inventory_products
+
+Read-only inventory view used by LLM-generated SQL.
+
+### chat_sales_entries
+
+Read-only sales view with stable column names for analytics queries.
+
+### chat_inventory_transactions
+
+Read-only inventory history view with product and actor snapshots.
+
+### chat_recent_activity
+
+Unified recent activity feed combining sales and inventory events.
+
+## Chat execution function
+
+### execute_chat_read_query(query_text text, max_rows integer)
+
+- Security definer function owned by a low-privilege `chat_query_role`
+- Accepts one SQL statement that must start with `SELECT` or `WITH`
+- Rejects comments, write/admin keywords, and system-catalog access
+- Returns JSON with rows, rowCount, and truncated metadata
+- Service-role app code calls this function through Supabase RPC
+
 ## Access model
 
 - Admin can manage users, categories, inventory, and backup export.
 - Staff can manage inventory and sales within allowed routes.
 - Viewer, if enabled, is read-only.
+- Chat SQL runs through `chat_query_role`, which can only read approved `chat_*` views.
 
 ## Migration notes
 

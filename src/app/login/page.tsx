@@ -33,11 +33,41 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const demoCredentials = getPhaseOneDemoCredentials();
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center gap-6 px-4 py-8 sm:px-6 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-8 lg:px-8">
-      <section className="overflow-hidden rounded-[32px] border border-[color:var(--border)] bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,247,237,0.92))] p-6 shadow-[var(--shadow)] sm:p-8">
+    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center gap-6 px-4 py-6 sm:px-6 lg:grid lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-8 lg:px-8 lg:py-10">
+      <section className="order-1 grid gap-4 lg:order-2">
+        <LoginForm redirectTo={redirectTo} />
+
+        {demoCredentials.length ? (
+          <section className="rounded-[28px] border border-dashed border-[color:rgba(15,118,110,0.28)] bg-[color:rgba(255,255,255,0.86)] p-5 shadow-[var(--shadow)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]">
+              Dev demo accounts
+            </p>
+            <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
+              These accounts stay available in development as a fallback, and the same credentials
+              can also be inserted into the dev users table with the seed SQL file.
+            </p>
+            <div className="mt-4 grid gap-3">
+              {demoCredentials.map((credential) => (
+                <div
+                  key={credential.email}
+                  className="rounded-[24px] border border-[color:var(--border)] bg-white px-4 py-3"
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="ui-badge ui-badge-primary">{credential.role}</span>
+                    <p className="text-sm font-semibold text-[color:var(--foreground)]">{credential.email}</p>
+                  </div>
+                  <p className="mt-2 text-sm text-[color:var(--muted)]">{credential.password}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
+      </section>
+
+      <section className="order-2 overflow-hidden rounded-[32px] border border-[color:var(--border)] bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,247,237,0.92))] p-6 shadow-[var(--shadow)] sm:p-8 lg:order-1">
         <StatusPill label="Auth foundation" />
         <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-          Sign in to the shop workspace.
+          Shop workspace access that feels calm on a phone.
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-[color:var(--muted)] sm:text-lg">
           Sign-in uses app-managed passwords, signed sessions, and role-aware route protection for
@@ -66,36 +96,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </p>
           </div>
         </div>
-      </section>
-
-      <section className="grid gap-4">
-        <LoginForm redirectTo={redirectTo} />
-
-        {demoCredentials.length ? (
-          <section className="rounded-[28px] border border-dashed border-[color:rgba(15,118,110,0.28)] bg-[color:rgba(255,255,255,0.86)] p-5 shadow-[var(--shadow)]">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]">
-              Dev demo accounts
-            </p>
-            <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-              These accounts stay available in development as a fallback, and the same credentials
-              can also be inserted into the dev users table with the seed SQL file.
-            </p>
-            <div className="mt-4 grid gap-3">
-              {demoCredentials.map((credential) => (
-                <div
-                  key={credential.email}
-                  className="rounded-2xl border border-[color:var(--border)] bg-white px-4 py-3"
-                >
-                  <p className="text-sm font-semibold text-[color:var(--foreground)]">
-                    {credential.role}
-                  </p>
-                  <p className="mt-1 text-sm text-[color:var(--muted)]">{credential.email}</p>
-                  <p className="mt-1 text-sm text-[color:var(--muted)]">{credential.password}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : null}
       </section>
     </main>
   );

@@ -70,7 +70,7 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
 
   return (
     <div className="grid gap-4">
-      <div className="rounded-[28px] border border-[color:var(--border)] bg-[color:var(--surface)] p-5 shadow-[var(--shadow)]">
+      <div className="rounded-[28px] border border-[color:var(--border)] bg-[color:var(--surface)] p-4 shadow-[var(--shadow)] sm:p-5">
         <label
           htmlFor="chat-question"
           className="text-xs font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]"
@@ -82,17 +82,18 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
           placeholder="Example: How much manual revenue came from Mar 1 to Mar 7, and which product sold most?"
-          className="mt-3 min-h-32 w-full rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface-strong)] px-4 py-3 text-sm text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)] focus:ring-2 focus:ring-[color:var(--accent-soft)]"
+          className="mt-3 min-h-32 w-full rounded-[26px] border border-[color:var(--border)] bg-[color:var(--surface-strong)] px-4 py-3 text-sm text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)] focus:ring-2 focus:ring-[color:var(--accent-soft)]"
         />
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm leading-6 text-[color:var(--muted)]">
-            Chat now plans read-only SQL against approved database views, retries when a query fails, and stays safely non-mutating.
+            Chat plans read-only SQL against approved database views, retries when a query fails, and stays safely non-mutating.
           </p>
           <button
             type="button"
             onClick={() => void submitQuestion(question)}
             disabled={isBusy}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--primary)] px-5 py-2 text-sm font-semibold text-white shadow-[var(--shadow)] transition hover:-translate-y-0.5 hover:bg-[color:var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-70"
+            className="ui-button ui-button-primary w-full sm:w-auto"
+            aria-busy={isBusy}
           >
             {isBusy ? "Checking..." : "Ask chat"}
           </button>
@@ -100,7 +101,7 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
         {error ? <p className="mt-3 text-sm text-rose-700">{error}</p> : null}
       </div>
 
-      <div className="rounded-[28px] border border-[color:var(--border)] bg-[color:var(--surface)] p-5 shadow-[var(--shadow)]">
+      <div className="rounded-[28px] border border-[color:var(--border)] bg-[color:var(--surface)] p-4 shadow-[var(--shadow)] sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]">
           Example prompts
         </p>
@@ -114,7 +115,7 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
                 void submitQuestion(example);
               }}
               disabled={isBusy}
-              className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-strong)] px-4 py-3 text-left text-sm font-medium text-[color:var(--foreground)] transition hover:-translate-y-0.5 hover:border-[color:var(--primary)] disabled:cursor-not-allowed disabled:opacity-70"
+              className="rounded-[24px] border border-[color:var(--border)] bg-[color:var(--surface-strong)] px-4 py-3 text-left text-sm font-medium text-[color:var(--foreground)] shadow-[var(--shadow-soft)] transition hover:-translate-y-0.5 hover:border-[color:var(--primary)] active:translate-y-[1px] active:scale-[0.985] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {example}
             </button>
@@ -122,23 +123,25 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
         </div>
       </div>
 
-      <div className="rounded-[28px] border border-[color:var(--border)] bg-[color:var(--surface)] p-5 shadow-[var(--shadow)]">
+      <div className="rounded-[28px] border border-[color:var(--border)] bg-[color:var(--surface)] p-4 shadow-[var(--shadow)] sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]">
           Answer
         </p>
         {result ? (
           <div className="mt-4 grid gap-4">
-            <div className="rounded-3xl bg-[color:var(--surface-strong)] p-4 text-sm leading-7 text-[color:var(--foreground)]">
+            <div className="rounded-[26px] bg-[color:var(--surface-strong)] p-4 text-sm leading-7 text-[color:var(--foreground)]">
               {result.answer}
             </div>
 
             {result.table ? (
-              <div className="overflow-hidden rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface-strong)]">
+              <div className="overflow-hidden rounded-[26px] border border-[color:var(--border)] bg-[color:var(--surface-strong)]">
                 <div className="border-b border-[color:var(--border)] px-4 py-3 text-sm font-semibold text-[color:var(--foreground)]">
                   {result.table.caption}
                   {typeof result.table.rowCount === "number" ? (
                     <span className="ml-2 text-xs font-medium text-[color:var(--muted)]">
-                      {result.table.truncated ? `Showing ${result.table.rows.length} of ${result.table.rowCount}+ rows` : `${result.table.rowCount} rows`}
+                      {result.table.truncated
+                        ? `Showing ${result.table.rows.length} of ${result.table.rowCount}+ rows`
+                        : `${result.table.rowCount} rows`}
                     </span>
                   ) : null}
                 </div>
@@ -173,7 +176,7 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
             ) : null}
 
             {result.queryPlan ? (
-              <details className="rounded-3xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
+              <details className="rounded-[26px] border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
                 <summary className="cursor-pointer font-semibold text-[color:var(--foreground)]">
                   See SQL plan and retries
                 </summary>
@@ -200,7 +203,9 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
                         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--primary)]">
                           Attempt {index + 1}: {attempt.stage} / {attempt.outcome}
                         </p>
-                        {attempt.summary ? <p className="mt-2 text-xs leading-6 text-[color:var(--foreground)]">{attempt.summary}</p> : null}
+                        {attempt.summary ? (
+                          <p className="mt-2 text-xs leading-6 text-[color:var(--foreground)]">{attempt.summary}</p>
+                        ) : null}
                         <pre className="mt-2 overflow-x-auto rounded-2xl bg-slate-950 px-3 py-2 text-[11px] leading-5 text-slate-100">
                           {attempt.sql}
                         </pre>
@@ -215,7 +220,7 @@ export function ChatWorkspace({ exampleQuestions }: ChatWorkspaceProps) {
                 </div>
               </details>
             ) : result.parsedIntent ? (
-              <details className="rounded-3xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
+              <details className="rounded-[26px] border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
                 <summary className="cursor-pointer font-semibold text-[color:var(--foreground)]">
                   See legacy parsed intent
                 </summary>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -54,8 +54,23 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
   return (
     <form
       action={handleSubmit}
-      className="grid gap-4 rounded-[28px] border border-[color:var(--border)] bg-[color:var(--surface)] p-5 shadow-[var(--shadow)] backdrop-blur sm:p-6"
+      className="grid gap-4 rounded-[30px] border border-[color:var(--border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,247,241,0.96))] p-5 shadow-[var(--shadow)] backdrop-blur sm:p-6"
     >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]">
+            Shop workspace
+          </p>
+          <h2 className="mt-3 font-[family-name:var(--font-display)] text-2xl font-semibold text-[color:var(--foreground)]">
+            Sign in on mobile without friction.
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
+            Your session stays role-aware and protected as soon as the sign-in completes.
+          </p>
+        </div>
+        <span className="ui-badge ui-badge-primary">Secure</span>
+      </div>
+
       <div>
         <label
           htmlFor="email"
@@ -69,7 +84,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
           type="email"
           autoComplete="email"
           placeholder="you@shop.local"
-          className="mt-2 w-full rounded-2xl border border-[color:var(--border)] bg-white px-4 py-3 text-base text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)] focus:ring-4 focus:ring-[color:rgba(15,118,110,0.12)]"
+          className="mt-2 w-full rounded-[22px] border border-[color:var(--border)] bg-white px-4 py-3 text-base text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)] focus:ring-4 focus:ring-[color:rgba(15,118,110,0.12)]"
           disabled={isPending}
           required
         />
@@ -88,7 +103,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
           type="password"
           autoComplete="current-password"
           placeholder="Enter your password"
-          className="mt-2 w-full rounded-2xl border border-[color:var(--border)] bg-white px-4 py-3 text-base text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)] focus:ring-4 focus:ring-[color:rgba(15,118,110,0.12)]"
+          className="mt-2 w-full rounded-[22px] border border-[color:var(--border)] bg-white px-4 py-3 text-base text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)] focus:ring-4 focus:ring-[color:rgba(15,118,110,0.12)]"
           disabled={isPending}
           required
         />
@@ -102,8 +117,9 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 
       <button
         type="submit"
-        className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--primary)] px-5 py-3 text-sm font-semibold text-white shadow-[var(--shadow)] transition hover:bg-[color:var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-70"
+        className="ui-button ui-button-primary w-full"
         disabled={isPending}
+        aria-busy={isPending}
       >
         {isPending ? "Signing in..." : "Sign in"}
       </button>

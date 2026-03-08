@@ -37,8 +37,18 @@
 
 ### Backup export
 
-- Export route returns a file
-- Export action is logged
+- Admin export route returns a CSV file
+- Export action is logged with the right export type and status
+- Non-admin users cannot access backup export
+- Mobile-width admin backup page stays usable
+
+### Final mobile-width pass
+
+- Dashboard summary cards, quick links, and activity feed remain readable on a narrow screen
+- Inventory list, detail, create/edit, archive, and restore flows remain usable on a narrow screen
+- Sales list, create, and correction flows remain usable on a narrow screen
+- Chat input, answer area, and SQL panel remain usable on a narrow screen
+- Admin backup export buttons and recent logs remain usable on a narrow screen
 
 ## Phase 6 seeded chat checks
 

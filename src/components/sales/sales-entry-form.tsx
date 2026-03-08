@@ -403,7 +403,7 @@ export function SalesEntryForm({
       ) : (
         <button
           type="submit"
-          className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--primary)] px-5 py-3 text-sm font-semibold text-white shadow-[var(--shadow)] transition hover:bg-[color:var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-70"
+          className="ui-button ui-button-primary w-full sm:w-auto"
           disabled={isPending || isSubmitting || (saleMode === "linked" && products.length === 0)}
         >
           {isSubmitting || isPending ? (mode === "create" ? "Creating sale..." : "Saving correction...") : mode === "create" ? "Create sale" : "Save correction"}
@@ -412,6 +412,3 @@ export function SalesEntryForm({
     </form>
   );
 }
-
-
-

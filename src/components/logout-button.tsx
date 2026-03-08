@@ -1,9 +1,13 @@
-﻿"use client";
+"use client";
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-export function LogoutButton() {
+type LogoutButtonProps = {
+  className?: string;
+};
+
+export function LogoutButton({ className = "" }: LogoutButtonProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -31,8 +35,9 @@ export function LogoutButton() {
       <button
         type="button"
         onClick={handleLogout}
-        className="inline-flex min-h-11 items-center justify-center rounded-full border border-[color:var(--border)] bg-[color:var(--surface-strong)] px-4 py-2 text-sm font-semibold text-[color:var(--foreground)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"
+        className={`ui-button ui-button-secondary ${className}`.trim()}
         disabled={isPending}
+        aria-busy={isPending}
       >
         {isPending ? "Signing out..." : "Sign out"}
       </button>

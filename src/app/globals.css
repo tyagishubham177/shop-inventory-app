@@ -13,6 +13,8 @@
   --accent: #d97706;
   --accent-soft: rgba(217, 119, 6, 0.12);
   --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+  --shadow-soft: 0 14px 28px rgba(15, 23, 42, 0.09);
+  --shadow-pressed: 0 10px 18px rgba(15, 23, 42, 0.12);
   --font-body: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
   --font-display: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
 }
@@ -51,4 +53,174 @@ select {
 ::selection {
   color: white;
   background: rgba(15, 118, 110, 0.9);
+}
+
+@layer base {
+  button,
+  a,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  .ui-button {
+    position: relative;
+    display: inline-flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    padding: 0.8rem 1.15rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease,
+      color 180ms ease,
+      opacity 180ms ease;
+    transform: translateY(0) scale(1);
+  }
+
+  .ui-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .ui-button:active {
+    transform: translateY(1px) scale(0.985);
+    box-shadow: var(--shadow-pressed);
+  }
+
+  .ui-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18), var(--shadow-soft);
+  }
+
+  .ui-button[disabled],
+  .ui-button[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.64;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .ui-button-primary {
+    color: #ffffff;
+    background: linear-gradient(180deg, #14877d 0%, #0f766e 100%);
+    box-shadow: 0 18px 32px rgba(15, 118, 110, 0.2);
+  }
+
+  .ui-button-primary:hover {
+    background: linear-gradient(180deg, #13766d 0%, #115e59 100%);
+  }
+
+  .ui-button-secondary {
+    color: var(--foreground);
+    border-color: rgba(15, 23, 42, 0.08);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 244, 238, 0.96));
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .ui-button-secondary:hover {
+    border-color: rgba(15, 118, 110, 0.22);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(242, 249, 247, 0.98));
+  }
+
+  .ui-button-ghost {
+    color: var(--foreground);
+    border-color: rgba(15, 118, 110, 0.14);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: none;
+  }
+
+  .ui-button-ghost:hover {
+    border-color: rgba(15, 118, 110, 0.28);
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .ui-badge {
+    display: inline-flex;
+    min-height: 1.8rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ui-badge-primary {
+    background: rgba(15, 118, 110, 0.12);
+    color: var(--primary);
+  }
+
+  .ui-badge-success {
+    background: rgba(5, 150, 105, 0.12);
+    color: #047857;
+  }
+
+  .ui-badge-warm {
+    background: rgba(217, 119, 6, 0.12);
+    color: #b45309;
+  }
+
+  .ui-details-card {
+    overflow: hidden;
+    border-radius: 1.75rem;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .ui-fab {
+    display: inline-flex;
+    height: 4rem;
+    min-width: 4rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 118, 110, 0.1);
+    background: linear-gradient(180deg, #14877d 0%, #0f766e 100%);
+    padding: 0 1.1rem;
+    color: #ffffff;
+    box-shadow: 0 18px 30px rgba(15, 118, 110, 0.28);
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .ui-fab:hover {
+    transform: translateY(-1px);
+  }
+
+  .ui-fab:active {
+    transform: translateY(1px) scale(0.985);
+  }
+
+  .ui-fab-sheet {
+    width: min(18rem, calc(100vw - 2rem));
+    border-radius: 1.75rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(255, 252, 245, 0.96);
+    padding: 0.85rem;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+  }
 }

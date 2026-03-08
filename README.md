@@ -4,7 +4,7 @@ A mobile-first inventory and sales web app for a small internal shop team.
 
 ## Summary
 
-This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema baseline, the Supabase-backed auth lookup, the completed Phase 3 inventory workspace, the completed Phase 4 sales workflow, the completed Phase 5 dashboard, and the completed Phase 6 read-only chat workspace.
+This repository now includes the completed Phase 1 auth foundation, the Phase 2 schema baseline, the Supabase-backed auth lookup, the completed Phase 3 inventory workspace, the completed Phase 4 sales workflow, the completed Phase 5 dashboard, the completed Phase 6 read-only chat workspace, and the completed Phase 7 backup export workspace.
 
 The product is intended for 2 to 3 internal users, low scale, and fast daily mobile usage. The v1 scope stays focused on auth, inventory, sales, dashboard summaries, backup export, and read-only LLM chat over controlled read-only database views.
 
@@ -28,7 +28,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 - Phase 4 sales is complete with manual and linked sale entry, correction support, and filtered sales history
 - Phase 5 dashboard is complete with summary cards, low-stock alerts, recent activity, and trend snapshots
 - Phase 6 chat is complete with direct read-only SQL planning, execution through approved chat views, retry-on-failure behavior, and a mobile-first `/chat` page
-- Phase 7 backups are next
+- Phase 7 backups are complete with admin-only CSV exports, backup logging, restore guidance, and a final manual mobile verification checklist
 
 ## Start here
 
@@ -36,7 +36,7 @@ The product is intended for 2 to 3 internal users, low scale, and fast daily mob
 2. Review [DECISIONS.md](DECISIONS.md)
 3. Follow [TASKS.md](TASKS.md)
 4. Use the docs in [docs/](docs)
-5. Use the phase checklist in [Phase/phase7.md](Phase/phase7.md)
+5. Use the final verification checklist in [Phase/phase7.md](Phase/phase7.md)
 
 ## Local development
 

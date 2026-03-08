@@ -204,7 +204,7 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
           <div className="flex flex-col gap-3 sm:flex-row xl:col-span-3 xl:justify-end">
             <button
               type="submit"
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--primary)] px-5 py-3 text-sm font-semibold text-white shadow-[var(--shadow)] transition hover:bg-[color:var(--primary-strong)]"
+              className="ui-button ui-button-primary w-full sm:w-auto"
             >
               Apply filters
             </button>

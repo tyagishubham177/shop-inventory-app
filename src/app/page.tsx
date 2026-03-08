@@ -1,5 +1,8 @@
-﻿import { ActionLink } from "@/components/action-link";
+import type { ReactNode } from "react";
+
+import { ActionLink } from "@/components/action-link";
 import { LogoutButton } from "@/components/logout-button";
+import { MobileFabMenu } from "@/components/mobile-fab-menu";
 import { SectionCard } from "@/components/section-card";
 import { StatusPill } from "@/components/status-pill";
 import { requireCurrentUser } from "@/lib/auth/current-user";
@@ -7,6 +10,13 @@ import { getDashboardData } from "@/lib/dashboard/data";
 
 type HomePageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+type MobileDashboardDisclosureProps = {
+  eyebrow: string;
+  summary: string;
+  detailTitle: string;
+  children: ReactNode;
 };
 
 function readStringValue(value?: string | string[]) {
@@ -43,6 +53,32 @@ function formatTrend(current: number, previous: number) {
   return `${Math.abs(change).toFixed(0)}% ${direction} vs previous 7 days`;
 }
 
+function MobileDashboardDisclosure({
+  eyebrow,
+  summary,
+  detailTitle,
+  children,
+}: MobileDashboardDisclosureProps) {
+  return (
+    <details className="ui-details-card md:hidden">
+      <summary className="flex cursor-pointer items-start justify-between gap-4 px-4 py-4">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]">
+            {eyebrow}
+          </p>
+          <p className="mt-2 text-lg font-semibold text-[color:var(--foreground)]">{summary}</p>
+          <p className="mt-1 text-sm text-[color:var(--muted)]">Tap to expand</p>
+        </div>
+        <span className="ui-badge ui-badge-primary">Open</span>
+      </summary>
+      <div className="border-t border-[color:var(--border)] px-4 py-4">
+        <p className="text-sm font-semibold text-[color:var(--foreground)]">{detailTitle}</p>
+        <div className="mt-3 text-sm leading-6 text-[color:var(--muted)]">{children}</div>
+      </div>
+    </details>
+  );
+}
+
 export default async function Home({ searchParams }: HomePageProps) {
   const user = await requireCurrentUser();
   const resolvedSearchParams = (await searchParams) ?? {};
@@ -76,14 +112,16 @@ export default async function Home({ searchParams }: HomePageProps) {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-              <ActionLink href="/inventory" muted>
+              <ActionLink href="/inventory" muted className="w-full sm:w-auto">
                 Open inventory
               </ActionLink>
-              <ActionLink href="/sales">Open sales</ActionLink>
-              <ActionLink href="/chat" muted>
+              <ActionLink href="/sales" className="w-full sm:w-auto">
+                Open sales
+              </ActionLink>
+              <ActionLink href="/chat" muted className="w-full sm:w-auto">
                 Open chat
               </ActionLink>
-              <LogoutButton />
+              <LogoutButton className="w-full sm:w-auto" />
             </div>
           </div>
         </section>
@@ -103,8 +141,15 @@ export default async function Home({ searchParams }: HomePageProps) {
     dashboard.summary.previous7DaysRevenue,
   );
 
+  const fabActions = [
+    { href: "/inventory", label: "Inventory" },
+    { href: "/sales", label: "Sales" },
+    { href: "/chat", label: "Chat", tone: "secondary" as const },
+    ...(user.role === "admin" ? [{ href: "/admin", label: "Backups", tone: "secondary" as const }] : []),
+  ];
+
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-6 px-4 py-6 pb-28 sm:px-6 md:pb-10 lg:px-8 lg:py-10">
       <section className="overflow-hidden rounded-[32px] border border-[color:var(--border)] bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,247,237,0.9))] p-6 shadow-[var(--shadow)] sm:p-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-3xl">
@@ -118,15 +163,21 @@ export default async function Home({ searchParams }: HomePageProps) {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            <ActionLink href="/inventory" muted>
+            <ActionLink href="/inventory" muted className="hidden sm:inline-flex sm:w-auto">
               Open inventory
             </ActionLink>
-            <ActionLink href="/sales">Open sales</ActionLink>
-            <ActionLink href="/chat" muted>
+            <ActionLink href="/sales" className="hidden sm:inline-flex sm:w-auto">
+              Open sales
+            </ActionLink>
+            <ActionLink href="/chat" muted className="hidden sm:inline-flex sm:w-auto">
               Open chat
             </ActionLink>
-            {user.role === "admin" ? <ActionLink href="/admin" muted>Open admin check</ActionLink> : null}
-            <LogoutButton />
+            {user.role === "admin" ? (
+              <ActionLink href="/admin" muted className="hidden sm:inline-flex sm:w-auto">
+                Open backup center
+              </ActionLink>
+            ) : null}
+            <LogoutButton className="w-full sm:w-auto" />
           </div>
         </div>
       </section>
@@ -152,7 +203,77 @@ export default async function Home({ searchParams }: HomePageProps) {
         </SectionCard>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="grid gap-3 md:hidden">
+        <MobileDashboardDisclosure
+          eyebrow="Low stock"
+          summary={`${dashboard.summary.lowStockCount} items to restock`}
+          detailTitle="Restock these first"
+        >
+          {dashboard.lowStockItems.length === 0 ? (
+            <p>Nothing is below reorder level right now.</p>
+          ) : (
+            <div className="space-y-3">
+              {dashboard.lowStockItems.map((item) => (
+                <a
+                  key={item.id}
+                  href={`/inventory/${item.id}`}
+                  className="flex items-start justify-between gap-3 rounded-[22px] bg-[color:var(--surface-strong)] px-4 py-3"
+                >
+                  <div>
+                    <p className="font-semibold text-[color:var(--foreground)]">{item.name}</p>
+                    <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--muted)]">
+                      {item.sku} - {item.categoryName}
+                    </p>
+                  </div>
+                  <div className="text-right text-xs text-[color:var(--muted)]">
+                    <p className="font-semibold text-amber-900">{item.currentStock} left</p>
+                    <p>{item.gapToTarget} below target</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </MobileDashboardDisclosure>
+
+        <MobileDashboardDisclosure
+          eyebrow="Recent sales"
+          summary={`${formatCurrency(dashboard.summary.todayRevenue)} today`}
+          detailTitle="Latest revenue snapshot"
+        >
+          <div className="space-y-3">
+            <div className="rounded-[22px] bg-[color:var(--surface-strong)] p-4">
+              <p className="text-xs uppercase tracking-[0.24em] text-[color:var(--muted)]">Stock value estimate</p>
+              <p className="mt-2 text-xl font-semibold text-[color:var(--foreground)]">
+                {formatCurrency(dashboard.summary.inventoryValueEstimate)}
+              </p>
+            </div>
+            {dashboard.recentSales.length === 0 ? (
+              <p>No sales have been saved yet.</p>
+            ) : (
+              dashboard.recentSales.map((sale) => (
+                <a
+                  key={sale.id}
+                  href={`/sales/${sale.id}`}
+                  className="flex items-start justify-between gap-3 rounded-[22px] bg-[color:var(--surface-strong)] px-4 py-3"
+                >
+                  <div>
+                    <p className="font-semibold text-[color:var(--foreground)]">{sale.productName}</p>
+                    <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--muted)]">
+                      {sale.saleMode} sale - {sale.quantity} units
+                    </p>
+                  </div>
+                  <div className="text-right text-xs text-[color:var(--muted)]">
+                    <p className="font-semibold text-[color:var(--foreground)]">{formatCurrency(sale.lineTotal)}</p>
+                    <p>{formatDateTime(sale.soldAt)}</p>
+                  </div>
+                </a>
+              ))
+            )}
+          </div>
+        </MobileDashboardDisclosure>
+      </div>
+
+      <section className="hidden gap-4 md:grid lg:grid-cols-[1.05fr_0.95fr]">
         <SectionCard eyebrow="Low-stock summary" title="Refill these first">
           {dashboard.lowStockItems.length === 0 ? (
             <p>Nothing is below reorder level right now. The current active catalog looks healthy.</p>
@@ -167,7 +288,7 @@ export default async function Home({ searchParams }: HomePageProps) {
                   <div>
                     <p className="font-semibold text-[color:var(--foreground)]">{item.name}</p>
                     <p className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
-                      {item.sku} • {item.categoryName}
+                      {item.sku} - {item.categoryName}
                     </p>
                   </div>
                   <div className="text-right">
@@ -202,7 +323,7 @@ export default async function Home({ searchParams }: HomePageProps) {
                   <div>
                     <p className="font-semibold text-[color:var(--foreground)]">{sale.productName}</p>
                     <p className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
-                      {sale.saleMode} sale • {sale.quantity} units
+                      {sale.saleMode} sale - {sale.quantity} units
                     </p>
                   </div>
                   <div className="text-right">
@@ -250,13 +371,13 @@ export default async function Home({ searchParams }: HomePageProps) {
           )}
         </SectionCard>
 
-        <SectionCard eyebrow="Quick access" title="Jump into the next task">
+        <SectionCard eyebrow="Quick access" title="Jump into the next task" className="hidden md:block">
           <div className="grid gap-3">
-            <ActionLink href="/inventory">Open inventory list</ActionLink>
-            <ActionLink href="/sales" muted>
+            <ActionLink href="/inventory" className="w-full sm:w-auto">Open inventory list</ActionLink>
+            <ActionLink href="/sales" muted className="w-full sm:w-auto">
               Open sales history
             </ActionLink>
-            <ActionLink href="/chat" muted>
+            <ActionLink href="/chat" muted className="w-full sm:w-auto">
               Open chat workspace
             </ActionLink>
             <div className="rounded-2xl bg-[color:var(--surface-strong)] p-4">
@@ -266,13 +387,20 @@ export default async function Home({ searchParams }: HomePageProps) {
                 Role: {user.role}. Archived products: {dashboard.summary.archivedProducts}.
               </p>
             </div>
-            <div className="rounded-2xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
-              Read-only chat is live in Phase 6, and backup export stays queued for Phase 7.
-            </div>
+            {user.role === "admin" ? (
+              <div className="rounded-2xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
+                Backup export is now available from the admin workspace, while chat remains read-only.
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-dashed border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">
+                Chat remains read-only, and backup export stays limited to admin users.
+              </div>
+            )}
           </div>
         </SectionCard>
       </section>
+
+      <MobileFabMenu actions={fabActions} label="Dashboard actions" />
     </main>
   );
 }
-

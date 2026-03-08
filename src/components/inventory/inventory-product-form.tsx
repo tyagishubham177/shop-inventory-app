@@ -382,7 +382,7 @@ export function InventoryProductForm({
       ) : (
         <button
           type="submit"
-          className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--primary)] px-5 py-3 text-sm font-semibold text-white shadow-[var(--shadow)] transition hover:bg-[color:var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-70"
+          className="ui-button ui-button-primary w-full sm:w-auto"
           disabled={isPending || categories.length === 0}
         >
           {isPending ? "Saving..." : mode === "create" ? "Create product" : "Save changes"}

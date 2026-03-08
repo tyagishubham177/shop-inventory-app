@@ -93,7 +93,13 @@ Guardrails:
 
 ### POST /api/backups/export
 
-Creates and streams a CSV export and logs the action.
+Request:
+- exportType (`inventory_products`, `sales_entries`, `category_master`, `inventory_transactions`, or `users`)
+
+Response:
+- CSV file download
+- `Content-Disposition` attachment filename
+- log row written to `backups_log` with `completed` or `failed` status
 
 ## Validation rules
 

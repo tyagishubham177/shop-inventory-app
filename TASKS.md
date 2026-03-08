@@ -58,7 +58,7 @@
 - Add result summarization and debug visibility.
 - Keep a legacy fallback path during rollout.
 
-## Phase 7: backups [current]
+## Phase 7: backups [done]
 
 - Add CSV export helpers.
 - Add backup export route.

@@ -23,7 +23,7 @@
 - Low-stock list
 - Recent activity
 - Quick links to inventory, sales, and chat
-- Backup export stays outside the dashboard until Phase 7 ships
+- Admin-only backup export stays outside the dashboard in the admin workspace
 
 ### Inventory list
 
